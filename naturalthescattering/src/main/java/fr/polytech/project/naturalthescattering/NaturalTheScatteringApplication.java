@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
 import fr.polytech.project.naturalthescattering.db.Customer;
+import fr.polytech.project.naturalthescattering.db.Gender;
 import fr.polytech.project.naturalthescattering.db.ICustomerRepository;
 
 @SpringBootApplication
@@ -25,11 +26,11 @@ public class NaturalTheScatteringApplication
 			config.exposeIdsFor(Customer.class);
 			
 			// save a few customers
-			repository.save(new Customer("Jack", "Bauer"));
-			repository.save(new Customer("Chloe", "O'Brian"));
-			repository.save(new Customer("Kim", "Bauer"));
-			repository.save(new Customer("David", "Palmer"));
-			repository.save(new Customer("Michelle", "Dessler"));
+			repository.save(new Customer("Jack", "Bauer", Gender.Male));
+			repository.save(new Customer("Chloe", "O'Brian", Gender.Female));
+			repository.save(new Customer("Kim", "Bauer", Gender.Female));
+			repository.save(new Customer("David", "Palmer", Gender.Male));
+			repository.save(new Customer("Michelle", "Dessler", Gender.Female));
 
 			// fetch all customers
 			log.info("Customers found with findAll():");
