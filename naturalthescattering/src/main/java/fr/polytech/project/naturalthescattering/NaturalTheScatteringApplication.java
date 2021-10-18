@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
 import fr.polytech.project.naturalthescattering.db.Customer;
 import fr.polytech.project.naturalthescattering.db.ICustomerRepository;
@@ -19,8 +20,10 @@ public class NaturalTheScatteringApplication
 	private static final Logger log = LoggerFactory.getLogger(NaturalTheScatteringApplication.class);
 	
 	@Bean
-	public CommandLineRunner demo() {
+	public CommandLineRunner demo(RepositoryRestConfiguration config) {
 		return (args) -> {
+			config.exposeIdsFor(Customer.class);
+			
 			// save a few customers
 			repository.save(new Customer("Jack", "Bauer"));
 			repository.save(new Customer("Chloe", "O'Brian"));
@@ -40,7 +43,7 @@ public class NaturalTheScatteringApplication
 			Customer customer = repository.findById(1L);
 			log.info("Customer found with findById(1L):");
 			log.info("--------------------------------");
-			log.info(customer.toString());
+			log.info(customer == null ? "none" : customer.toString());
 			log.info("");
 
 			// fetch customers by last name
@@ -51,8 +54,8 @@ public class NaturalTheScatteringApplication
 			});
 			log.info("");
 			
-			repository.deleteAll();
-			log.info("deleted all");
+			//repository.deleteAll();
+			//log.info("deleted all");
 		};
 	}
 	
