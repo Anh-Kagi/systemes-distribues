@@ -4,25 +4,32 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 public class Duel {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
 	@Temporal(TemporalType.TIME)
-	@GeneratedValue
+	@CreationTimestamp
 	private Date date;
 	
 	@ManyToOne(optional=false)
+	@Cascade({CascadeType.ALL})
 	private Compte p1;
 	
 	@ManyToOne(optional=false)
+	@Cascade({CascadeType.ALL})
 	private Compte p2;
 	
 	@SuppressWarnings("unused")

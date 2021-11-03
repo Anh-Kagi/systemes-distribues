@@ -1,60 +1,32 @@
 package fr.polytech.projet.naturalthescattering.NaturalTheScattering;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.repository.IBoosterRepository;
-import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.repository.IBotRepository;
-import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.repository.ICarteRepository;
-import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.repository.ICompteRepository;
-import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.repository.IDeckRepository;
-import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.repository.IDuelRepository;
-import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.repository.IGuildeRepository;
-import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.repository.IJoueurRepository;
-import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.repository.IMessageRepository;
-import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.repository.IThreadRepository;
-import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.repository.ITournoiRepository;
-import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.repository.IVenteRepository;
+import org.springframework.context.annotation.Bean;
+
+import fr.polytech.projet.naturalthescattering.NaturalTheScattering.db.Joueur;
 
 @SpringBootApplication
 public class NaturalTheScatteringApplication {
-	@Autowired(required=true)
-	public IBoosterRepository boosters;
-	
-	@Autowired(required=true)
-	public IBotRepository bots;
-	
-	@Autowired(required=true)
-	public ICarteRepository cartes;
-	
-	@Autowired(required=true)
-	public ICompteRepository comptes;
-	
-	@Autowired(required=true)
-	public IDeckRepository decks;
-	
-	@Autowired(required=true)
-	public IDuelRepository duels;
-	
-	@Autowired(required=true)
-	public IGuildeRepository guildes;
-	
-	@Autowired(required=true)
-	public IJoueurRepository joueurs;
-	
-	@Autowired(required=true)
-	public IMessageRepository messages;
-	
-	@Autowired(required=true)
-	public IThreadRepository threads;
-	
-	@Autowired(required=true)
-	public ITournoiRepository tournois;
-	
-	@Autowired(required=true)
-	public IVenteRepository ventes;
+	@Autowired
+	Repository repo;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(NaturalTheScatteringApplication.class, args);
+	}
+	
+	@Bean
+	public CommandLineRunner dbdemo() {
+		return (args) -> {
+			Joueur pedro = new Joueur("XxxPedroLePloxxX", "NotAPlo", 1000000000);
+			Joueur pablo = new Joueur("XxxPabloLePloxxX", "IsAPlo", -1000000000);
+			//repo.joueurs.save(pedro);
+			repo.joueurs.save(pablo);
+			
+			pedro.createGuilde("Ordre");
+			repo.joueurs.save(pedro);
+		};
 	}
 }

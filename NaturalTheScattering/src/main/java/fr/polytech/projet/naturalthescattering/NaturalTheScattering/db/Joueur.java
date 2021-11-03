@@ -3,13 +3,17 @@ package fr.polytech.projet.naturalthescattering.NaturalTheScattering.db;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 public class Joueur extends Compte {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable=false)
@@ -18,6 +22,7 @@ public class Joueur extends Compte {
 	private int argent = 0;
 	
 	@OneToOne
+	@Cascade({CascadeType.ALL})
 	private Guilde guilde;
 	
 	@SuppressWarnings("unused")
@@ -56,5 +61,14 @@ public class Joueur extends Compte {
 	
 	public Guilde getGuilde() {
 		return this.guilde;
+	}
+	
+	public Guilde createGuilde(String nom) {
+		if (getGuilde() == null) {
+			Guilde guilde = new Guilde(nom, this);
+			setGuilde(guilde);
+			return guilde;
+		} else
+			return null;
 	}
 }
