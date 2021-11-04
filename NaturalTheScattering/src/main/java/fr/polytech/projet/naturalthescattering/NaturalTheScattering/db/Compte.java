@@ -13,9 +13,10 @@ import javax.persistence.Table;
 public class Compte {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(nullable=false, length=16)
 	private Long id;
 	
-	@Column(nullable=false)
+	@Column(nullable=false, unique=true)
 	private String pseudo;
 	
 	protected Compte() {}

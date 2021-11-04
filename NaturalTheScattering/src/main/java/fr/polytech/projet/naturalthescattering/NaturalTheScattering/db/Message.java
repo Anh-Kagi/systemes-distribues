@@ -22,7 +22,7 @@ public class Message {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	private Date date;
 	

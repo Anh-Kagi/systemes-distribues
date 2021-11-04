@@ -21,7 +21,7 @@ public class Tournoi {
 	@Column(nullable=false)
 	private String nom;
 	
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	private Date date;
 	

@@ -22,7 +22,7 @@ public class Thread {
 	
 	private String nom;
 	
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	private Date date;
 	
