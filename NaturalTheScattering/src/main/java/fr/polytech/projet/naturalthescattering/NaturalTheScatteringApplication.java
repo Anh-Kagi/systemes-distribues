@@ -1,0 +1,73 @@
+package fr.polytech.projet.naturalthescattering;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import fr.polytech.projet.naturalthescattering.auth.NaturalTheScatteringAuthEntryPoint;
+import fr.polytech.projet.naturalthescattering.auth.NaturalTheScatteringAuthProvider;
+import fr.polytech.projet.naturalthescattering.auth.filter.AuthFilter;
+import fr.polytech.projet.naturalthescattering.db.Joueur;
+
+@SpringBootApplication
+@EnableWebSecurity
+public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapter {
+	@Autowired
+	Repository repo;
+	
+	public static void main(String[] args) {
+		SpringApplication.run(NaturalTheScatteringApplication.class, args);
+	}
+	
+	@Bean
+	public Logger getLogger() {
+		return LoggerFactory.getLogger(NaturalTheScatteringApplication.class);
+	}
+	
+	@Bean("pbkdf2")
+	public PasswordEncoder passwordEncoder() {
+		Config.pbkdf2 = new Pbkdf2PasswordEncoder(Config.pbkdf2Secret, Config.pbkdf2SaltSize, Config.pbkdf2Iterations, Config.pbkdf2HashWidth);
+		return Config.pbkdf2;
+	}
+	
+	@Bean
+	@DependsOn("pbkdf2")
+	public CommandLineRunner temp_user() {
+		return (args) -> {
+			repo.joueurs.save(new Joueur("tmp", "tmp", 0));
+		};
+	}
+	
+	@Autowired
+	NaturalTheScatteringAuthProvider authenticationProvider;
+	@Autowired
+	private NaturalTheScatteringAuthEntryPoint authenticationEntryPoint;
+	
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(authenticationProvider);
+	}
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+			.anyRequest().authenticated()
+			.and()
+			.httpBasic()
+			.authenticationEntryPoint(authenticationEntryPoint);
+		
+		http.addFilterAfter(new AuthFilter(), BasicAuthenticationFilter.class);
+	}
+}
