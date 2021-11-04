@@ -14,11 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
-import fr.polytech.projet.naturalthescattering.auth.NaturalTheScatteringAuthEntryPoint;
 import fr.polytech.projet.naturalthescattering.auth.NaturalTheScatteringAuthProvider;
-import fr.polytech.projet.naturalthescattering.auth.filter.AuthFilter;
 import fr.polytech.projet.naturalthescattering.db.Joueur;
 
 @SpringBootApplication
@@ -52,22 +48,32 @@ public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapte
 	
 	@Autowired
 	NaturalTheScatteringAuthProvider authenticationProvider;
-	@Autowired
-	private NaturalTheScatteringAuthEntryPoint authenticationEntryPoint;
 	
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	@Override
+	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider);
 	}
 	
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+	protected void configure(final HttpSecurity http) throws Exception {
+		http
+			.csrf().disable()
+			.authorizeRequests()
+			//.antMatchers("/admin/**").hasRole("ADMIN")
+			//.antMatchers("/anonymous*").anonymous()
+			.antMatchers("/api/auth/login").permitAll()
 			.anyRequest().authenticated()
 			.and()
-			.httpBasic()
-			.authenticationEntryPoint(authenticationEntryPoint);
-		
-		http.addFilterAfter(new AuthFilter(), BasicAuthenticationFilter.class);
+			.formLogin()
+			//.loginPage("/web/login.html")
+			.loginProcessingUrl("/api/auth/login")
+			//.defaultSuccessUrl("/web/profile", true)
+			//.failureUrl("/web/auth/login.html?error=true")
+			//.failureHandler(authenticationFailureHandler())
+			.and()
+			.logout()
+			.logoutUrl("/api/auth/logout")
+			.deleteCookies("JSESSIONID");
+			//.logoutSuccessHandler(logoutSuccessHandler());
 	}
 }
