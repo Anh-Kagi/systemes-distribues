@@ -39,6 +39,10 @@ public class Deck {
 		this.cartes = cartes;
 	}
 	
+	public long getId() {
+		return this.id;
+	}
+	
 	public String getNom() {
 		return this.nom;
 	}
@@ -49,5 +53,14 @@ public class Deck {
 	
 	public Carte[] getCartes() {
 		return this.cartes;
+	}
+	
+	@Override
+	public String toString() {
+		String cartes_ids = "[";
+		for (Carte c : getCartes())
+			cartes_ids += " " + c.getId();
+		cartes_ids += " ]";
+		return "[Deck(id=" + getId() + " | nom=" + getNom() + " | cartes=" + cartes_ids + ")]";
 	}
 }

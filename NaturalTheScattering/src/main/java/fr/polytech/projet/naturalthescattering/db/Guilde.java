@@ -31,6 +31,10 @@ public class Guilde {
 		setChef(chef);
 	}
 	
+	public long getId() {
+		return this.id;
+	}
+	
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
@@ -45,5 +49,10 @@ public class Guilde {
 	
 	public Joueur getChef() {
 		return this.chef;
+	}
+	
+	@Override
+	public String toString() {
+		return "[Guilde(id=" + getId() + " | nom=" + getNom() + " | chef=" + (getChef() == null ? null : getChef().getId()) + ")]";
 	}
 }

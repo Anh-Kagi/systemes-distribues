@@ -32,6 +32,9 @@ public class Duel {
 	@Cascade({CascadeType.ALL})
 	private Compte p2;
 	
+	@ManyToOne
+	private Tournoi tournoi;
+	
 	@SuppressWarnings("unused")
 	private Duel() {}
 	
@@ -42,6 +45,10 @@ public class Duel {
 	public Duel(Compte p1, Compte p2) {
 		setP1(p1);
 		setP2(p2);
+	}
+	
+	public long getId() {
+		return this.id;
 	}
 	
 	public void setP1(Compte p1) {
@@ -58,5 +65,26 @@ public class Duel {
 	
 	public Compte getP2() {
 		return this.p2;
+	}
+	
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	public Date getDate() {
+		return this.date;
+	}
+	
+	public void setTournoi(Tournoi tournoi) {
+		this.tournoi = tournoi;
+	}
+	
+	public Tournoi getTournoi() {
+		return this.tournoi;
+	}
+	
+	@Override
+	public String toString() {
+		return "[Duel(id=" + getId() + " | p1=" + (getP1() == null ? null : getP1().getId()) + " | p2=" + (getP2() == null ? null : getP2().getId()) + " | date=" + getDate() + " | tournoi=" + (getTournoi() == null ? null : getTournoi().getId()) + ")]";
 	}
 }

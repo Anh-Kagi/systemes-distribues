@@ -3,9 +3,9 @@ package fr.polytech.projet.naturalthescattering;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fr.polytech.projet.naturalthescattering.db.repository.IBoosterRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IBotRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.ICarteRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.ICompteCarteRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.ICompteRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IDeckRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IDuelRepository;
@@ -19,9 +19,6 @@ import fr.polytech.projet.naturalthescattering.db.repository.IVenteRepository;
 @Component
 public class Repository {
 	@Autowired(required=true)
-	public IBoosterRepository boosters;
-	
-	@Autowired(required=true)
 	public IBotRepository bots;
 	
 	@Autowired(required=true)
@@ -29,6 +26,9 @@ public class Repository {
 	
 	@Autowired(required=true)
 	public ICompteRepository comptes;
+	
+	@Autowired(required=true)
+	public ICompteCarteRepository comptecartes;
 	
 	@Autowired(required=true)
 	public IDeckRepository decks;

@@ -3,13 +3,13 @@ package fr.polytech.projet.naturalthescattering.db;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.springframework.context.annotation.DependsOn;
+
 import fr.polytech.projet.naturalthescattering.Config;
 
 @Entity
-@DependsOn(value="pbkdf2")
 public class Joueur extends Compte {
 	@Column(nullable=false, length=(Config.pbkdf2HashWidth+Config.pbkdf2SaltSize*8)/4)
 	private String mdp;
@@ -69,5 +69,13 @@ public class Joueur extends Compte {
 			return guilde;
 		} else
 			return null;
+	}
+	
+	@Override
+	public String toString() {
+		return "[Joueur(id=" + getId() +
+				" | argent=" + getArgent() +
+				" | guilde=" + (getGuilde() == null ? null : getGuilde().getId()) +
+				")]";
 	}
 }

@@ -5,13 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 @Entity
-public class Carte {
+public enum Carte {
+	Test1("Carte_test1", 1000),
+	Test2("Carte_test2", 9000);
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -21,17 +19,16 @@ public class Carte {
 	
 	private int rarete = 0;
 	
-	@ManyToOne(optional=false)
-	@Cascade({CascadeType.ALL})
-	private Booster booster;
+	//@SuppressWarnings("unused")
+	//private Carte() {}
 	
-	@SuppressWarnings("unused")
-	private Carte() {}
-	
-	public Carte(String nom, int rarete, Booster booster) {
+	private Carte(String nom, int rarete) {
 		this.nom = nom;
 		this.rarete = rarete;
-		this.booster = booster;
+	}
+	
+	public long getId() {
+		return this.id;
 	}
 	
 	public String getNom() {
@@ -42,7 +39,8 @@ public class Carte {
 		return this.rarete;
 	}
 	
-	public Booster getBooster() {
-		return this.booster;
+	@Override
+	public String toString() {
+		return "[Carte(id=" + getId() + " | nom=" + getNom() + " | rarete=" + getRarete() + ")]"; 
 	}
 }

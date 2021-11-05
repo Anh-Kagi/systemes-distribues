@@ -40,6 +40,10 @@ public class Thread {
 		this.proprietaire = proprietaire;
 	}
 	
+	public long getId() {
+		return this.id;
+	}
+	
 	public String getNom() {
 		return this.nom;
 	}
@@ -54,5 +58,10 @@ public class Thread {
 	
 	public boolean getOuvert() {
 		return this.ouvert;
+	}
+	
+	@Override
+	public String toString() {
+		return "[Thread(id=" + getId() + " | nom=" + getNom() + " | date=" + getDate() + " | ouvert=" + getOuvert() + " | proprietaire=" + (getProprietaire() == null ? null : getProprietaire().getId()) + ")]";
 	}
 }

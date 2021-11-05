@@ -25,7 +25,16 @@ public class Compte {
 		this.pseudo = pseudo;
 	}
 	
+	public Long getId() {
+		return this.id;
+	}
+	
 	public String getPseudo() {
 		return this.pseudo;
+	}
+	
+	@Override
+	public String toString() {
+		return "[Compte(id=" + getId() + " | pseudo=" + getPseudo() + ")]";
 	}
 }

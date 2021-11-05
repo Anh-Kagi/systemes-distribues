@@ -15,7 +15,18 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import fr.polytech.projet.naturalthescattering.auth.NaturalTheScatteringAuthProvider;
+import fr.polytech.projet.naturalthescattering.db.Bot;
+import fr.polytech.projet.naturalthescattering.db.Carte;
+import fr.polytech.projet.naturalthescattering.db.Compte;
+import fr.polytech.projet.naturalthescattering.db.CompteCarte;
+import fr.polytech.projet.naturalthescattering.db.Deck;
+import fr.polytech.projet.naturalthescattering.db.Duel;
+import fr.polytech.projet.naturalthescattering.db.Guilde;
 import fr.polytech.projet.naturalthescattering.db.Joueur;
+import fr.polytech.projet.naturalthescattering.db.Message;
+import fr.polytech.projet.naturalthescattering.db.Thread;
+import fr.polytech.projet.naturalthescattering.db.Tournoi;
+import fr.polytech.projet.naturalthescattering.db.Vente;
 
 @SpringBootApplication
 @EnableWebSecurity
@@ -43,6 +54,31 @@ public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapte
 	public CommandLineRunner temp_user() {
 		return (args) -> {
 			repo.joueurs.save(new Joueur("tmp", "tmp", 0));
+			
+			for (Bot b : repo.bots.findAll())
+				getLogger().info(b.toString());
+			for (Carte c : repo.cartes.findAll())
+				getLogger().info(c.toString());
+			for (Compte c : repo.comptes.findAll())
+				getLogger().info(c.toString());
+			for (CompteCarte c : repo.comptecartes.findAll())
+				getLogger().info(c.toString());
+			for (Deck d : repo.decks.findAll())
+				getLogger().info(d.toString());
+			for (Duel d : repo.duels.findAll())
+				getLogger().info(d.toString());
+			for (Guilde g : repo.guildes.findAll())
+				getLogger().info(g.toString());
+			for (Joueur j : repo.joueurs.findAll())
+				getLogger().info(j.toString());
+			for (Message m : repo.messages.findAll())
+				getLogger().info(m.toString());
+			for (Thread t : repo.threads.findAll())
+				getLogger().info(t.toString());
+			for (Tournoi t : repo.tournois.findAll())
+				getLogger().info(t.toString());
+			for (Vente v : repo.ventes.findAll())
+				getLogger().info(v.toString());
 		};
 	}
 	

@@ -42,8 +42,20 @@ public class Message {
 		setContenu(contenu);
 	}
 	
+	public long getId() {
+		return this.id;
+	}
+	
 	public Joueur getAuteur() {
 		return this.auteur;
+	}
+	
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	public Date getDate() {
+		return this.date;
 	}
 	
 	public void setContenu(String contenu) {
@@ -52,5 +64,10 @@ public class Message {
 	
 	public String getContenu() {
 		return this.contenu;
+	}
+	
+	@Override
+	public String toString() {
+		return "[Message(id=" + getId() + " | date=" + getDate() + " | contenu=" + getContenu().substring(0, 10) + " | auteur=" + (getAuteur() == null ? null : getAuteur().getId()) + ")]";
 	}
 }

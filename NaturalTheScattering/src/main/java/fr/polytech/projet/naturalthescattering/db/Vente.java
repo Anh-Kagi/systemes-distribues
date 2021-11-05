@@ -48,6 +48,10 @@ public class Vente {
 		setAcheteur(acheteur);
 	}
 	
+	public long getId() {
+		return this.id;
+	}
+	
 	public void setPrix(double prix) {
 		this.prix = prix;
 	}
@@ -74,5 +78,14 @@ public class Vente {
 	
 	public Carte[] getCartes() {
 		return this.cartes;
+	}
+	
+	@Override
+	public String toString() {
+		String cartes_ids = "[";
+		for (Carte c : getCartes())
+			cartes_ids += " " + c.getId();
+		cartes_ids += " ]";
+		return "[Vente(id=" + getId() + " | prix=" + getPrix() + " | vendeur=" + (getVendeur() == null ? null : getVendeur().getId()) + " | acheteur=" + (getAcheteur() == null ? null : getAcheteur().getId()) + " | cartes=" + cartes_ids + ")]";
 	}
 }

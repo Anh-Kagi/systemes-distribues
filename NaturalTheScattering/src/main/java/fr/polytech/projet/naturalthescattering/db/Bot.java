@@ -17,4 +17,9 @@ public class Bot extends Compte {
 	public int getDifficulte() {
 		return this.difficulte;
 	}
+	
+	@Override
+	public String toString() {
+		return "[Bot(id=" + getId() + " | pseudo=" + getPseudo() + " | difficulte=" + getDifficulte() + ")]";
+	}
 }
