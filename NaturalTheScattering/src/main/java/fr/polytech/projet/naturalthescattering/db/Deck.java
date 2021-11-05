@@ -2,9 +2,11 @@ package fr.polytech.projet.naturalthescattering.db;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OrderColumn;
@@ -23,15 +25,16 @@ public class Deck {
 	
 	@ManyToOne
 	@Cascade({CascadeType.ALL})
+	@JoinColumn(foreignKey=@ForeignKey(name="deck_proprietaire_ref"))
 	private Compte proprietaire;
 	
 	@ManyToMany
 	@OrderColumn(nullable=false)
 	@Cascade({CascadeType.ALL})
+	@JoinColumn(foreignKey=@ForeignKey(name="deck_cartes_ref"))
 	private Carte[] cartes;
 	
-	@SuppressWarnings("unused")
-	private Deck() {}
+	protected Deck() {}
 	
 	public Deck(String nom, Compte proprietaire, Carte[] cartes) {
 		this.nom = nom;
@@ -39,7 +42,7 @@ public class Deck {
 		this.cartes = cartes;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 	

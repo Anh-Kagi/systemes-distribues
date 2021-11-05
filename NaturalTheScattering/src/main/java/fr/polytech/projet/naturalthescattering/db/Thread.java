@@ -3,9 +3,11 @@ package fr.polytech.projet.naturalthescattering.db;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,17 +32,17 @@ public class Thread {
 	
 	@ManyToOne
 	@Cascade({CascadeType.ALL})
-	private Joueur proprietaire;
+	@JoinColumn(foreignKey=@ForeignKey(name="thread_proprietaire_ref"))
+	private Utilisateur proprietaire;
 	
-	@SuppressWarnings("unused")
-	private Thread() {}
+	protected Thread() {}
 	
-	public Thread(String nom, Joueur proprietaire) {
+	public Thread(String nom, Utilisateur proprietaire) {
 		this.nom = nom;
 		this.proprietaire = proprietaire;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 	
@@ -48,7 +50,7 @@ public class Thread {
 		return this.nom;
 	}
 	
-	public Joueur getProprietaire() {
+	public Utilisateur getProprietaire() {
 		return this.proprietaire;
 	}
 	

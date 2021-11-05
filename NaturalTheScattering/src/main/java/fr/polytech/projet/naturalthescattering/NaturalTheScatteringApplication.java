@@ -14,7 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
-import fr.polytech.projet.naturalthescattering.auth.NaturalTheScatteringAuthProvider;
+
+import fr.polytech.projet.naturalthescattering.auth.AuthProvider;
+import fr.polytech.projet.naturalthescattering.db.Admin;
 import fr.polytech.projet.naturalthescattering.db.Bot;
 import fr.polytech.projet.naturalthescattering.db.Carte;
 import fr.polytech.projet.naturalthescattering.db.Compte;
@@ -26,7 +28,9 @@ import fr.polytech.projet.naturalthescattering.db.Joueur;
 import fr.polytech.projet.naturalthescattering.db.Message;
 import fr.polytech.projet.naturalthescattering.db.Thread;
 import fr.polytech.projet.naturalthescattering.db.Tournoi;
+import fr.polytech.projet.naturalthescattering.db.Utilisateur;
 import fr.polytech.projet.naturalthescattering.db.Vente;
+import fr.polytech.projet.naturalthescattering.db.VenteCarte;
 
 @SpringBootApplication
 @EnableWebSecurity
@@ -54,7 +58,10 @@ public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapte
 	public CommandLineRunner temp_user() {
 		return (args) -> {
 			repo.joueurs.save(new Joueur("tmp", "tmp", 0));
+			repo.admins.save(new Admin("root", "root"));
 			
+			for (Admin a : repo.admins.findAll())
+				getLogger().info(a.toString());
 			for (Bot b : repo.bots.findAll())
 				getLogger().info(b.toString());
 			for (Carte c : repo.cartes.findAll())
@@ -77,13 +84,17 @@ public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapte
 				getLogger().info(t.toString());
 			for (Tournoi t : repo.tournois.findAll())
 				getLogger().info(t.toString());
+			for (Utilisateur u : repo.utilisateurs.findAll())
+				getLogger().info(u.toString());
 			for (Vente v : repo.ventes.findAll())
+				getLogger().info(v.toString());
+			for (VenteCarte v : repo.ventecartes.findAll())
 				getLogger().info(v.toString());
 		};
 	}
 	
 	@Autowired
-	NaturalTheScatteringAuthProvider authenticationProvider;
+	AuthProvider authenticationProvider;
 	
 	@Override
 	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
@@ -96,9 +107,9 @@ public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapte
 			.csrf().disable()
 			.authorizeRequests()
 			//.antMatchers("/admin/**").hasRole("ADMIN")
-			//.antMatchers("/anonymous*").anonymous()
-			.antMatchers("/api/auth/login").permitAll()
-			.anyRequest().authenticated()
+			//.antMatchers("/web/home").anonymous()
+			//.antMatchers("/api/auth/login").permitAll()
+			.anyRequest().permitAll()
 			.and()
 			.formLogin()
 			//.loginPage("/web/login.html")
@@ -109,7 +120,10 @@ public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapte
 			.and()
 			.logout()
 			.logoutUrl("/api/auth/logout")
-			.deleteCookies("JSESSIONID");
-			//.logoutSuccessHandler(logoutSuccessHandler());
+			.deleteCookies("JSESSIONID")
+			//.logoutSuccessHandler(logoutSuccessHandler())
+			.and()
+			.headers()
+			.frameOptions().sameOrigin();
 	}
 }

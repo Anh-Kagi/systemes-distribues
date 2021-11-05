@@ -3,6 +3,7 @@ package fr.polytech.projet.naturalthescattering;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import fr.polytech.projet.naturalthescattering.db.repository.IAdminRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IBotRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.ICarteRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.ICompteCarteRepository;
@@ -14,10 +15,15 @@ import fr.polytech.projet.naturalthescattering.db.repository.IJoueurRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IMessageRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IThreadRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.ITournoiRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.IUtilisateurRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.IVenteCarteRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IVenteRepository;
 
 @Component
 public class Repository {
+	@Autowired(required=true)
+	public IAdminRepository admins;
+	
 	@Autowired(required=true)
 	public IBotRepository bots;
 	
@@ -52,5 +58,11 @@ public class Repository {
 	public ITournoiRepository tournois;
 	
 	@Autowired(required=true)
+	public IUtilisateurRepository utilisateurs;
+	
+	@Autowired(required=true)
 	public IVenteRepository ventes;
+	
+	@Autowired(required=true)
+	public IVenteCarteRepository ventecartes;
 }

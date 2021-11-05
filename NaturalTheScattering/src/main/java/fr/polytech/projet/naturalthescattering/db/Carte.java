@@ -1,10 +1,16 @@
 package fr.polytech.projet.naturalthescattering.db;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 public enum Carte {
@@ -19,15 +25,27 @@ public enum Carte {
 	
 	private int rarete = 0;
 	
-	//@SuppressWarnings("unused")
-	//private Carte() {}
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(foreignKey=@ForeignKey(name="carte_comptecarte_ref"))
+	@Transient
+	private CompteCarte[] comptecartes;
+	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(foreignKey=@ForeignKey(name="carte_decks_ref"))
+	@Transient
+	private Deck[] decks;
+	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(foreignKey=@ForeignKey(name="carte_ventecartes_ref"))
+	@Transient
+	private VenteCarte[] ventecartes;
 	
 	private Carte(String nom, int rarete) {
 		this.nom = nom;
 		this.rarete = rarete;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 	

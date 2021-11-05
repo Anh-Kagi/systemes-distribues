@@ -6,8 +6,7 @@ import javax.persistence.Entity;
 public class Bot extends Compte {
 	private int difficulte = 1;
 	
-	@SuppressWarnings("unused")
-	private Bot() {}
+	protected Bot() {}
 	
 	public Bot(String pseudo, int difficulte) {
 		super(pseudo);

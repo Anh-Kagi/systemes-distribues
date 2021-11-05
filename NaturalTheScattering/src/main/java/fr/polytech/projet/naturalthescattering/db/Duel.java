@@ -3,10 +3,14 @@ package fr.polytech.projet.naturalthescattering.db;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -15,6 +19,9 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
+@Table(indexes= {@Index(name="tournoi_idx", columnList="tournoi_id"),
+		@Index(name="p1_idx", columnList="p1_id"),
+		@Index(name="p2_idx", columnList="p2_id")})
 public class Duel {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -26,17 +33,19 @@ public class Duel {
 	
 	@ManyToOne(optional=false)
 	@Cascade({CascadeType.ALL})
+	@JoinColumn(foreignKey=@ForeignKey(name="duel_p1_ref"))
 	private Compte p1;
 	
 	@ManyToOne(optional=false)
 	@Cascade({CascadeType.ALL})
+	@JoinColumn(foreignKey=@ForeignKey(name="duel_p2_ref"))
 	private Compte p2;
 	
 	@ManyToOne
+	@JoinColumn(foreignKey=@ForeignKey(name="duel_tournoi_ref"))
 	private Tournoi tournoi;
 	
-	@SuppressWarnings("unused")
-	private Duel() {}
+	protected Duel() {}
 	
 	public Duel(Compte p1) {
 		setP1(p1);
@@ -47,7 +56,7 @@ public class Duel {
 		setP2(p2);
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 	

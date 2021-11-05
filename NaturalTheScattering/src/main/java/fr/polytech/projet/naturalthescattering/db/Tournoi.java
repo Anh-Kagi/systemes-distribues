@@ -5,13 +5,15 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -30,18 +32,18 @@ public class Tournoi {
 	
 	private boolean ouvert = true;
 	
-	@OneToMany(cascade=CascadeType.ALL)
-	@OrderColumn
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="tournoi_id")
+	@Transient
+	@JoinColumn(foreignKey=@ForeignKey(name="tournoi_duels_ref"))
 	private Duel[] duels;
 	
-	@SuppressWarnings("unused")
-	private Tournoi() {}
+	protected Tournoi() {}
 	
 	public Tournoi(String nom) {
 		this.nom = nom;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 	

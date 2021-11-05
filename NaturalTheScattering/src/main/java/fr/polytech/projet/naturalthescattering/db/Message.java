@@ -4,9 +4,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
@@ -32,21 +34,21 @@ public class Message {
 	
 	@ManyToOne(optional=false)
 	@Cascade({CascadeType.ALL})
-	private Joueur auteur;
+	@JoinColumn(foreignKey=@ForeignKey(name="message_auteur_ref"))
+	private Utilisateur auteur;
 	
-	@SuppressWarnings("unused")
-	private Message() {}
+	protected Message() {}
 	
-	public Message(Joueur auteur, String contenu) {
+	public Message(Utilisateur auteur, String contenu) {
 		this.auteur = auteur;
 		setContenu(contenu);
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 	
-	public Joueur getAuteur() {
+	public Utilisateur getAuteur() {
 		return this.auteur;
 	}
 	

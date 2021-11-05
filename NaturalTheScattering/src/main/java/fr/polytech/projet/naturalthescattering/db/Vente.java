@@ -2,12 +2,15 @@ package fr.polytech.projet.naturalthescattering.db;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OrderColumn;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -23,32 +26,35 @@ public class Vente {
 	
 	@ManyToOne(optional=false)
 	@Cascade({CascadeType.ALL})
+	@JoinColumn(foreignKey=@ForeignKey(name="vente_vendeur_ref"))
 	private Joueur vendeur;
 	
 	@ManyToOne(optional=true)
 	@Cascade({CascadeType.ALL})
+	@JoinColumn(foreignKey=@ForeignKey(name="vente_acheteur_ref"))
 	private Joueur acheteur;
 	
 	@ManyToMany
 	@OrderColumn
+	@Transient
 	@Cascade({CascadeType.ALL})
-	private Carte[] cartes;
+	@JoinColumn(foreignKey=@ForeignKey(name="vente_ventecartes_ref"))
+	private VenteCarte[] ventecartes;
 	
-	@SuppressWarnings("unused")
-	private Vente() {}
+	protected Vente() {}
 	
-	public Vente(Joueur vendeur, double prix, Carte[] cartes) {
+	public Vente(Joueur vendeur, double prix, VenteCarte[] ventecartes) {
 		this.vendeur = vendeur;
 		setPrix(prix);
-		setCartes(cartes);
+		setVenteCartes(ventecartes);
 	}
 	
-	public Vente(Joueur vendeur, Joueur acheteur, double prix, Carte[] cartes) {
-		this(vendeur, prix, cartes);
+	public Vente(Joueur vendeur, Joueur acheteur, double prix, VenteCarte[] ventecartes) {
+		this(vendeur, prix, ventecartes);
 		setAcheteur(acheteur);
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 	
@@ -72,18 +78,18 @@ public class Vente {
 		return this.vendeur;
 	}
 	
-	public void setCartes(Carte[] cartes) {
-		this.cartes = cartes;
+	public void setVenteCartes(VenteCarte[] ventecartes) {
+		this.ventecartes = ventecartes;
 	}
 	
-	public Carte[] getCartes() {
-		return this.cartes;
+	public VenteCarte[] getVenteCartes() {
+		return this.ventecartes;
 	}
 	
 	@Override
 	public String toString() {
 		String cartes_ids = "[";
-		for (Carte c : getCartes())
+		for (VenteCarte c : getVenteCartes())
 			cartes_ids += " " + c.getId();
 		cartes_ids += " ]";
 		return "[Vente(id=" + getId() + " | prix=" + getPrix() + " | vendeur=" + (getVendeur() == null ? null : getVendeur().getId()) + " | acheteur=" + (getAcheteur() == null ? null : getAcheteur().getId()) + " | cartes=" + cartes_ids + ")]";

@@ -1,49 +1,34 @@
 package fr.polytech.projet.naturalthescattering.db;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ForeignKey;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import fr.polytech.projet.naturalthescattering.Config;
+import fr.polytech.projet.naturalthescattering.auth.Role;
 
 @Entity
-public class Joueur extends Compte {
-	@Column(nullable=false, length=(Config.pbkdf2HashWidth+Config.pbkdf2SaltSize*8)/4)
-	private String mdp;
-	
+public class Joueur extends Utilisateur {
 	private int argent = 0;
 	
 	@OneToOne
 	@Cascade({CascadeType.ALL})
+	@JoinColumn(foreignKey=@ForeignKey(name="joueur_guilde_ref"))
 	private Guilde guilde;
 	
-	@SuppressWarnings("unused")
-	private Joueur() {}
+	protected Joueur() {}
 	
 	public Joueur(String pseudo, String mdp, int argent) {
-		super(pseudo);
-		setMdp(null, mdp);
+		super(pseudo, mdp);
 		setArgent(argent);
 	}
 	
 	public Joueur(String pseudo, String mdp, int argent, Guilde guilde) {
 		this(pseudo, mdp, argent);
 		setGuilde(guilde);
-	}
-	
-	public boolean setMdp(String oldMdp, String newMdp) {
-		if (this.mdp == null || verifyMdp(oldMdp)) {
-			this.mdp = Config.pbkdf2.encode(newMdp);
-			return true;
-		} else
-			return false;
-	}
-	
-	public boolean verifyMdp(String mdp) {
-		return Config.pbkdf2.matches(mdp, this.mdp);
 	}
 	
 	public void setArgent(int argent) {
@@ -72,10 +57,12 @@ public class Joueur extends Compte {
 	}
 	
 	@Override
+	public Role getRole() {
+		return Role.PLAYER;
+	}
+	
+	@Override
 	public String toString() {
-		return "[Joueur(id=" + getId() +
-				" | argent=" + getArgent() +
-				" | guilde=" + (getGuilde() == null ? null : getGuilde().getId()) +
-				")]";
+		return "[Joueur(id=" + getId() + " | pseudo=" + getPseudo() + " | argent=" + getArgent() + " | guilde=" + (getGuilde() == null ? null : getGuilde().getId()) + ")]";
 	}
 }
