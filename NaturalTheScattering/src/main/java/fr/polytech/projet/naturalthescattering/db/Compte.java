@@ -24,7 +24,7 @@ public abstract class Compte {
 	@Column(nullable=false)
 	private String pseudo;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade=CascadeType.MERGE)
 	@Transient
 	private CompteCarte[] comptecartes;
 	

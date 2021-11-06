@@ -32,7 +32,7 @@ public class Tournoi {
 	
 	private boolean ouvert = true;
 	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="tournoi_id")
+	@OneToMany(cascade=CascadeType.MERGE, mappedBy="tournoi_id")
 	@Transient
 	@JoinColumn(foreignKey=@ForeignKey(name="tournoi_duels_ref"))
 	private Duel[] duels;

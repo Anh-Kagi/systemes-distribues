@@ -25,19 +25,19 @@ public class Vente {
 	private double prix;
 	
 	@ManyToOne(optional=false)
-	@Cascade({CascadeType.ALL})
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="vente_vendeur_ref"))
 	private Joueur vendeur;
 	
 	@ManyToOne(optional=true)
-	@Cascade({CascadeType.ALL})
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="vente_acheteur_ref"))
 	private Joueur acheteur;
 	
 	@ManyToMany
 	@OrderColumn
 	@Transient
-	@Cascade({CascadeType.ALL})
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="vente_ventecartes_ref"))
 	private VenteCarte[] ventecartes;
 	

@@ -27,7 +27,7 @@ public class Guilde {
 	private String nom;
 	
 	@OneToOne(optional=false)
-	@Cascade({CascadeType.ALL})
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="guilde_chef_ref"))
 	private Joueur chef;
 	

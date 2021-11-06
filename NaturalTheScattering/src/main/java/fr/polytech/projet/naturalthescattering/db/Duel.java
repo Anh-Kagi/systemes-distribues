@@ -32,12 +32,12 @@ public class Duel {
 	private Date date;
 	
 	@ManyToOne(optional=false)
-	@Cascade({CascadeType.ALL})
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="duel_p1_ref"))
 	private Compte p1;
 	
 	@ManyToOne(optional=false)
-	@Cascade({CascadeType.ALL})
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="duel_p2_ref"))
 	private Compte p2;
 	

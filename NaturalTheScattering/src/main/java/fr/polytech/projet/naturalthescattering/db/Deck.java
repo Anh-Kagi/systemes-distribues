@@ -24,13 +24,13 @@ public class Deck {
 	private String nom;
 	
 	@ManyToOne
-	@Cascade({CascadeType.ALL})
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="deck_proprietaire_ref"))
 	private Compte proprietaire;
 	
 	@ManyToMany
 	@OrderColumn(nullable=false)
-	@Cascade({CascadeType.ALL})
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="deck_cartes_ref"))
 	private Carte[] cartes;
 	

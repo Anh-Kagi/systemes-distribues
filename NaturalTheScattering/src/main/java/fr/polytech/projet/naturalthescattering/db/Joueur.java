@@ -15,7 +15,7 @@ public class Joueur extends Utilisateur {
 	private int argent = 0;
 	
 	@OneToOne
-	@Cascade({CascadeType.ALL})
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="joueur_guilde_ref"))
 	private Guilde guilde;
 	

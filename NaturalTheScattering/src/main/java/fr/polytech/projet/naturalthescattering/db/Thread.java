@@ -31,7 +31,7 @@ public class Thread {
 	private boolean ouvert = true;
 	
 	@ManyToOne
-	@Cascade({CascadeType.ALL})
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="thread_proprietaire_ref"))
 	private Utilisateur proprietaire;
 	

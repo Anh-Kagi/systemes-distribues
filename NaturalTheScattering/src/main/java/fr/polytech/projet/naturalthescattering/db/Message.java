@@ -33,7 +33,7 @@ public class Message {
 	private String contenu;
 	
 	@ManyToOne(optional=false)
-	@Cascade({CascadeType.ALL})
+	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="message_auteur_ref"))
 	private Utilisateur auteur;
 	

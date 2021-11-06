@@ -22,11 +22,11 @@ public class CompteCarte {
 	
 	private int quantite;
 	
-	@ManyToOne(cascade=CascadeType.ALL, optional=false)
+	@ManyToOne(cascade=CascadeType.MERGE, optional=false)
 	@JoinColumn(foreignKey=@ForeignKey(name="comptecarte_proprietaire_ref"))
 	private Compte proprietaire;
 	
-	@ManyToOne(cascade=CascadeType.ALL, optional=false)
+	@ManyToOne(cascade=CascadeType.MERGE, optional=false)
 	@JoinColumn(foreignKey=@ForeignKey(name="comptecarte_carte_ref"))
 	private Carte carte;
 	
@@ -64,6 +64,10 @@ public class CompteCarte {
 	
 	public int getQuantite() {
 		return this.quantite;
+	}
+	
+	public void incQuantite() {
+		this.quantite++;
 	}
 	
 	@Override

@@ -23,17 +23,17 @@ public class Carte {
 	
 	private int rarete = 0;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(cascade=CascadeType.MERGE, fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(name="carte_comptecarte_ref"))
 	@Transient
 	private CompteCarte[] comptecartes;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(cascade=CascadeType.MERGE, fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(name="carte_decks_ref"))
 	@Transient
 	private Deck[] decks;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(cascade=CascadeType.MERGE, fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(name="carte_ventecartes_ref"))
 	@Transient
 	private VenteCarte[] ventecartes;
