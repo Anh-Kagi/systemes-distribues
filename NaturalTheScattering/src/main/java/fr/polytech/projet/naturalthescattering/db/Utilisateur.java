@@ -30,6 +30,10 @@ public abstract class Utilisateur extends Compte {
 		return Config.pbkdf2.matches(mdp, this.mdp);
 	}
 	
+	public String getMdp() {
+		return this.mdp;
+	}
+	
 	public Role getRole() {
 		return Role.GUEST;
 	}

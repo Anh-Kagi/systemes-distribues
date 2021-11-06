@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -34,6 +35,7 @@ import fr.polytech.projet.naturalthescattering.db.VenteCarte;
 
 @SpringBootApplication
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapter {
 	@Autowired
 	Repository repo;
@@ -106,10 +108,8 @@ public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapte
 		http
 			.csrf().disable()
 			.authorizeRequests()
-			//.antMatchers("/admin/**").hasRole("ADMIN")
-			//.antMatchers("/web/home").anonymous()
-			//.antMatchers("/api/auth/login").permitAll()
-			.anyRequest().permitAll()
+			.antMatchers("/api/auth/login").permitAll()
+			.anyRequest().authenticated()
 			.and()
 			.formLogin()
 			//.loginPage("/web/login.html")

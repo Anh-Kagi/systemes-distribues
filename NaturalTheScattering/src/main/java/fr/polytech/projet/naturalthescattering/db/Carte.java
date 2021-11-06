@@ -13,9 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
-public enum Carte {
-	Test1("Carte_test1", 1000),
-	Test2("Carte_test2", 9000);
+public class Carte {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -40,7 +38,9 @@ public enum Carte {
 	@Transient
 	private VenteCarte[] ventecartes;
 	
-	private Carte(String nom, int rarete) {
+	protected Carte() {}
+	
+	public Carte(String nom, int rarete) {
 		this.nom = nom;
 		this.rarete = rarete;
 	}
