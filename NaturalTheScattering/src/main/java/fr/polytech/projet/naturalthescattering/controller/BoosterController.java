@@ -1,5 +1,6 @@
 package fr.polytech.projet.naturalthescattering.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,12 +34,59 @@ public class BoosterController {
 	@Autowired
 	private ICompteRepository comptes;
 	
+
+	private static class OpenResult {
+		private String result;
+		private String reason;
+		private List<Long> booster = new ArrayList<Long>();
+		
+		public OpenResult() {}
+		
+		@SuppressWarnings("unused")
+		public OpenResult(String result, String reason, List<Carte> booster) {
+			setResult(result);
+			setReason(reason);
+			setBooster(booster);
+		}
+		
+		public void setResult(String result) {
+			this.result = result;
+		}
+		
+		@SuppressWarnings("unused")
+		public String getResult() {
+			return this.result;
+		}
+		
+		public void setReason(String reason) {
+			this.reason = reason;
+		}
+		
+		@SuppressWarnings("unused")
+		public String getReason() {
+			return this.reason;
+		}
+		
+		public void setBooster(List<Carte> booster) {
+			booster.forEach((c) -> {
+				this.booster.add(c.getId());
+			});
+		}
+		
+		@SuppressWarnings("unused")
+		public List<Long> getBooster() {
+			return this.booster;
+		}
+	}
+	
 	@PostMapping(path="/open")
-	public String open(HttpServletRequest req, HttpServletResponse res, Authentication auth) {
+	public OpenResult open(HttpServletRequest req, HttpServletResponse res, Authentication auth) {
 		Compte compte = comptes.findByPseudo(auth.getName());
 		
 		// choose 5 randomly carte
 		List<Carte> cartesList = cartes.findAll();
+
+		OpenResult result = new OpenResult();
 		
 		// TODO: spend points to open
 		
@@ -46,11 +94,7 @@ public class BoosterController {
 			Collections.shuffle(cartesList);
 			List<Carte> booster = cartesList.subList(0, 5);
 			
-			// TODO: change reponse creation method
-			String jsonRes = "{status: 'success', booster: [";
-			
 			for (Carte c : booster) {
-				jsonRes += c.getId() + ", ";
 				CompteCarte cc = comptecartes.findByProprietaireAndCarte(compte, c);
 				if (cc == null)
 					comptecartes.save(new CompteCarte(compte, c, 1));
@@ -59,11 +103,16 @@ public class BoosterController {
 					comptecartes.save(cc);
 				}
 			}
-			jsonRes += "]}";
-			return jsonRes;
+			
+			result.setResult("success");
+			result.setReason("");
+			result.setBooster(booster);
+			return result;
 		} else {
 			res.setStatus(500);
-			return "{status: 'error', reason: 'no card found in database'}";
+			result.setResult("error");
+			result.setReason("Not enough cards found in database");
+			return result;
 		}
 	}
 }
