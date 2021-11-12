@@ -83,7 +83,7 @@ public class BoosterController {
 	public OpenResult open(HttpServletRequest req, HttpServletResponse res, Authentication auth) {
 		Compte compte = comptes.findByPseudo(auth.getName());
 		
-		// choose 5 randomly carte
+		// choose 5 random carte
 		List<Carte> cartesList = cartes.findAll();
 
 		OpenResult result = new OpenResult();

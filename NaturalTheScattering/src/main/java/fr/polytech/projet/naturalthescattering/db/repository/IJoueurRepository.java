@@ -6,4 +6,5 @@ import fr.polytech.projet.naturalthescattering.db.Joueur;
 
 public interface IJoueurRepository extends CrudRepository<Joueur, Long> {
 	Joueur findByPseudo(String pseudo);
+	boolean existsByPseudo(String pseudo);
 }

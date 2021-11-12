@@ -68,6 +68,7 @@ public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapte
 		http
 			.csrf().disable()
 			.authorizeRequests()
+			.antMatchers("/api/auth/*").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.formLogin()
