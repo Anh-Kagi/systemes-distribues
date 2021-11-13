@@ -1,10 +1,8 @@
 package fr.polytech.projet.naturalthescattering.controller;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.polytech.projet.naturalthescattering.controller.results.BoosterOpenResult;
 import fr.polytech.projet.naturalthescattering.db.Carte;
 import fr.polytech.projet.naturalthescattering.db.Compte;
 import fr.polytech.projet.naturalthescattering.db.CompteCarte;
@@ -34,59 +33,14 @@ public class BoosterController {
 	@Autowired
 	private ICompteRepository comptes;
 	
-
-	private static class OpenResult {
-		private String result;
-		private String reason;
-		private List<Long> booster = new ArrayList<Long>();
-		
-		public OpenResult() {}
-		
-		@SuppressWarnings("unused")
-		public OpenResult(String result, String reason, List<Carte> booster) {
-			setResult(result);
-			setReason(reason);
-			setBooster(booster);
-		}
-		
-		public void setResult(String result) {
-			this.result = result;
-		}
-		
-		@SuppressWarnings("unused")
-		public String getResult() {
-			return this.result;
-		}
-		
-		public void setReason(String reason) {
-			this.reason = reason;
-		}
-		
-		@SuppressWarnings("unused")
-		public String getReason() {
-			return this.reason;
-		}
-		
-		public void setBooster(List<Carte> booster) {
-			booster.forEach((c) -> {
-				this.booster.add(c.getId());
-			});
-		}
-		
-		@SuppressWarnings("unused")
-		public List<Long> getBooster() {
-			return this.booster;
-		}
-	}
-	
 	@PostMapping(path="/open")
-	public OpenResult open(HttpServletRequest req, HttpServletResponse res, Authentication auth) {
+	public BoosterOpenResult open(HttpServletResponse res, Authentication auth) {
 		Compte compte = comptes.findByPseudo(auth.getName());
 		
 		// choose 5 random carte
 		List<Carte> cartesList = cartes.findAll();
 
-		OpenResult result = new OpenResult();
+		BoosterOpenResult result = new BoosterOpenResult();
 		
 		// TODO: spend points to open
 		
@@ -104,13 +58,13 @@ public class BoosterController {
 				}
 			}
 			
-			result.setResult("success");
+			result.setSuccess(true);
 			result.setReason("");
 			result.setBooster(booster);
 			return result;
 		} else {
 			res.setStatus(500);
-			result.setResult("error");
+			result.setSuccess(false);
 			result.setReason("Not enough cards found in database");
 			return result;
 		}

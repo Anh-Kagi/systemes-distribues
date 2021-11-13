@@ -1,0 +1,63 @@
+package fr.polytech.projet.naturalthescattering.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import fr.polytech.projet.naturalthescattering.controller.results.ComptePseudoResult;
+import fr.polytech.projet.naturalthescattering.controller.results.GenericResult;
+import fr.polytech.projet.naturalthescattering.db.Utilisateur;
+import fr.polytech.projet.naturalthescattering.db.repository.IUtilisateurRepository;
+
+@RestController
+@RequestMapping(path="/api/utilisateur")
+@PreAuthorize("@authVerifier.isPlayer(authentication.name)")
+public class UtilisateurController {
+	@Autowired
+	private IUtilisateurRepository utilisateurs;
+	
+	@GetMapping(path="/pseudo")
+	public ComptePseudoResult pseudo(Authentication auth) {
+		return new ComptePseudoResult(auth.getName());
+	}
+	
+	@PutMapping(path="/mdp")
+	public GenericResult mdp(HttpServletRequest req, Authentication auth, @RequestParam(name="old", required=true) String oldmdp, @RequestParam(name="new", required=true) String newmdp) {
+		GenericResult result = new GenericResult();
+		Utilisateur utilisateur = utilisateurs.findByPseudo(auth.getName());
+		if (utilisateur == null) {
+			result.setSuccess(false);
+			result.setReason("User not found");
+			return result;
+		} else {
+			if (utilisateur.setMdp(oldmdp, newmdp)) {
+				utilisateurs.save(utilisateur);
+			    Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getName(), newmdp); // create new Authantication with new password
+			    SecurityContext sc = SecurityContextHolder.getContext();
+			    sc.setAuthentication(newAuth); // change Authentication
+			    HttpSession session = req.getSession(false); // should not return false (user should be already authenticated)
+			    session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc); // update context
+			    
+			    result.setSuccess(true);
+			    result.setReason("");
+			    return result;
+			} else {
+				result.setSuccess(false);
+				result.setReason("old password doesn't match");
+				return result;
+			}
+		}
+	}
+}

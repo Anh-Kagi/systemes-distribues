@@ -25,7 +25,7 @@ public class AuthVerifier {
 	}
 	
 	public boolean isPlayer(String pseudo) {
-		log.info("verifying user for admin rights: " + pseudo);
+		log.info("verifying user for player rights: " + pseudo);
 		Utilisateur utilisateur = utilisateurs.findByPseudo(pseudo);
 		if (utilisateur != null) {
 			return utilisateur.getRole().level() <= Role.PLAYER.level();

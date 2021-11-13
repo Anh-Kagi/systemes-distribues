@@ -6,4 +6,5 @@ import fr.polytech.projet.naturalthescattering.db.Compte;
 
 public interface ICompteRepository extends CrudRepository<Compte, Long> {
 	public Compte findByPseudo(String pseudo);
+	public boolean existsByPseudo(String pseudo);
 }
