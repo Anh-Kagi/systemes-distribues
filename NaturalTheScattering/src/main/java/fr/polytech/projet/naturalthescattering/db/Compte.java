@@ -1,5 +1,7 @@
 package fr.polytech.projet.naturalthescattering.db;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 @Entity
@@ -18,15 +19,14 @@ import javax.persistence.UniqueConstraint;
 public abstract class Compte {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(nullable=false, length=16)
+	@Column(nullable=false)
 	private Long id;
 	
-	@Column(nullable=false)
+	@Column(nullable=false, length=16)
 	private String pseudo;
 	
-	@OneToMany(cascade=CascadeType.MERGE)
-	@Transient
-	private CompteCarte[] comptecartes;
+	@OneToMany(cascade={CascadeType.MERGE, CascadeType.REMOVE}, targetEntity=CompteCarte.class, mappedBy="proprietaire")
+	private List<CompteCarte> comptecartes;
 	
 	protected Compte() {}
 	
@@ -45,5 +45,9 @@ public abstract class Compte {
 	@Override
 	public String toString() {
 		return "[Compte(id=" + getId() + " | pseudo=" + getPseudo() + ")]";
+	}
+	
+	public List<CompteCarte> getCompteCarte() {
+		return this.comptecartes;
 	}
 }

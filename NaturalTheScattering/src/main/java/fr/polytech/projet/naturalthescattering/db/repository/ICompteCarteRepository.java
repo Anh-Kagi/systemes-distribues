@@ -9,4 +9,5 @@ import fr.polytech.projet.naturalthescattering.db.CompteCarte;
 public interface ICompteCarteRepository extends CrudRepository<CompteCarte, Long> {
 	public CompteCarte findByProprietaire(Compte proprietaire);
 	public CompteCarte findByProprietaireAndCarte(Compte proprietaire, Carte carte);
+	public void removeByProprietaire(Compte proprietaire);
 }

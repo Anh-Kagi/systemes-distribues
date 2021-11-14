@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +36,7 @@ public class BoosterController {
 	private ICompteRepository comptes;
 	
 	@PostMapping(path="/open")
-	public BoosterOpenResult open(HttpServletResponse res, Authentication auth) {
+	public ResponseEntity<BoosterOpenResult> open(HttpServletResponse res, Authentication auth) {
 		Compte compte = comptes.findByPseudo(auth.getName());
 		
 		// choose 5 random carte
@@ -61,12 +63,12 @@ public class BoosterController {
 			result.setSuccess(true);
 			result.setReason("");
 			result.setBooster(booster);
-			return result;
+			return new ResponseEntity<BoosterOpenResult>(result, HttpStatus.CREATED);
 		} else {
 			res.setStatus(500);
 			result.setSuccess(false);
 			result.setReason("Not enough cards found in database");
-			return result;
+			return new ResponseEntity<BoosterOpenResult>(result, HttpStatus.SERVICE_UNAVAILABLE);
 		}
 	}
 }
