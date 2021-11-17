@@ -36,95 +36,143 @@ public class ForumController {
 	@Autowired
 	private IUtilisateurRepository utilisateurs;
 	
-	//// CRUD thread
-	@PostMapping(path={"", "/"})
+	// Create Thread
+	@PostMapping(path="/thread")
 	public ResponseEntity<ForumResult.Thread.Create> createThread(Authentication auth, @RequestParam(name="nom") String nom, @RequestParam(name="contenu") String contenu) {
 		Utilisateur utilisateur = utilisateurs.findByPseudo(auth.getName());
 		ForumResult.Thread.Create result = new ForumResult.Thread.Create();
+		
 		if (utilisateur == null) {
 			result.setReason("user not found");
 			return new ResponseEntity<ForumResult.Thread.Create>(result, HttpStatus.INTERNAL_SERVER_ERROR);
-		} else {
-			Thread thread = new Thread(nom, utilisateur, contenu);
-			threads.save(thread);
-			
-			result.setSuccess(true);
-			result.setId(thread.getId());
-			return new ResponseEntity<ForumResult.Thread.Create>(result, HttpStatus.CREATED);
 		}
+		
+		Thread thread = new Thread(nom, utilisateur, contenu);
+		threads.save(thread);
+		
+		result.setSuccess(true);
+		result.setId(thread.getId());
+		return new ResponseEntity<ForumResult.Thread.Create>(result, HttpStatus.CREATED);
 	}
 	
-	@GetMapping(path="/{id}")
+	// Read Thread infos
+	@GetMapping(path="/thread/{id}")
 	public ResponseEntity<ForumResult.Thread.Read> readThread(@PathVariable(name="id") Long id) {
 		Thread thread = threads.findById(id).orElse(null);
 		ForumResult.Thread.Read result = new ForumResult.Thread.Read();
+		
 		if (thread == null) {
 			result.setReason("thread doesn't exists");
 			return new ResponseEntity<ForumResult.Thread.Read>(result, HttpStatus.NOT_FOUND);
-		} else {
-			result.setSuccess(true);
-			result.fromThread(thread);
-			return new ResponseEntity<ForumResult.Thread.Read>(result, HttpStatus.OK);
 		}
+		
+		result.setSuccess(true);
+		result.fromThread(thread);
+		return new ResponseEntity<ForumResult.Thread.Read>(result, HttpStatus.OK);
 	}
 	
-	@PutMapping(path="/{id}")
-	public ResponseEntity<ForumResult.Thread.Read> updateThread(Authentication auth, @PathVariable(name="id") Long id, @RequestParam(name="ouvert", required=false) Boolean ouvert) {
-		Thread thread = threads.findById(id).orElse(null);
-		ForumResult.Thread.Read result = new ForumResult.Thread.Read();
-		if (thread == null) {
-			result.setReason("thread doesn't exists");
-			return new ResponseEntity<ForumResult.Thread.Read>(result, HttpStatus.NOT_FOUND);
-		} else {
-			if (thread.getAuteur().getPseudo() == auth.getName()) {
-				result.setSuccess(true);
-				result.fromThread(thread);
-				return new ResponseEntity<ForumResult.Thread.Read>(result, HttpStatus.OK);
-			} else {
-				result.setReason("this thread doesn't belong to you");
-				return new ResponseEntity<ForumResult.Thread.Read>(result, HttpStatus.FORBIDDEN);
-			}
-		}
-	}
-	
-	@DeleteMapping(path="/{id}")
-	public ResponseEntity<GenericResult> deleteThread(Authentication auth, @PathVariable(name="id") Long id) {
+	// Update Thread infos
+	@PutMapping(path="/thread/{id}")
+	public ResponseEntity<GenericResult> updateThread(Authentication auth, @PathVariable(name="id") Long id, @RequestParam(name="ouvert", required=false) Boolean ouvert) {
 		Thread thread = threads.findById(id).orElse(null);
 		GenericResult result = new GenericResult();
+		
 		if (thread == null) {
 			result.setReason("thread doesn't exists");
 			return new ResponseEntity<GenericResult>(result, HttpStatus.NOT_FOUND);
-		} else {
-			if (thread.getAuteur().getPseudo() == auth.getName()) {
-				result.setSuccess(true);
-				return new ResponseEntity<GenericResult>(result, HttpStatus.OK);
-			} else {
-				result.setReason("this thread doesn't belong to you");
-				return new ResponseEntity<GenericResult>(result, HttpStatus.FORBIDDEN);
-			}
 		}
+		
+		if (!thread.getAuteur().getPseudo().equals(auth.getName())) {
+			result.setReason("this thread doesn't belong to you");
+			return new ResponseEntity<GenericResult>(result, HttpStatus.FORBIDDEN);
+		}
+
+		result.setSuccess(true);
+		return new ResponseEntity<GenericResult>(result, HttpStatus.OK);
 	}
 	
-	//// CRUD message
-	@GetMapping(path="/{id}/msgs")
-	public ResponseEntity<ForumResult.Message.List> readMsgList(@PathVariable(name="id") Long id, @RequestParam(name="offset", required=false) Long offset, @RequestParam(name="limit", required=false) Long limit) {
+	// Delete Thread
+	@DeleteMapping(path="/thread/{id}")
+	public ResponseEntity<GenericResult> deleteThread(Authentication auth, @PathVariable(name="id") Long id) {
 		Thread thread = threads.findById(id).orElse(null);
-		ForumResult.Message.List result = new ForumResult.Message.List();
+		GenericResult result = new GenericResult();
+		
+		if (thread == null) {
+			result.setReason("thread doesn't exists");
+			return new ResponseEntity<GenericResult>(result, HttpStatus.NOT_FOUND);
+		}
+		
+		if (!thread.getAuteur().getPseudo().equals(auth.getName())) {
+			result.setReason("this thread doesn't belong to you");
+			return new ResponseEntity<GenericResult>(result, HttpStatus.FORBIDDEN);
+		}
+
+		result.setSuccess(true);
+		return new ResponseEntity<GenericResult>(result, HttpStatus.OK);
+	}
+	
+	// List thread messages
+	@GetMapping(path="/thread/{id}/msgs")
+	public ResponseEntity<ForumResult.Thread.List> readMsgList(@PathVariable(name="id") Long id, @RequestParam(name="offset", required=false) Long offset, @RequestParam(name="limit", required=false) Long limit) {
+		Thread thread = threads.findById(id).orElse(null);
+		ForumResult.Thread.List result = new ForumResult.Thread.List();
+		
 		if (thread == null) {
 			result.setReason("thread not found");
-			return new ResponseEntity<ForumResult.Message.List>(result, HttpStatus.NOT_FOUND);
-		} else {
-			Stream<Message> stream = messages.findByThreadOrderByDateAsc(thread);
-			if (offset != null)
-				stream = stream.skip(offset);
-			if (limit != null)
-				stream = stream.limit(limit);
-			
-			long messages[] = stream.mapToLong((m) -> m.getId()).toArray();
-			
-			result.setSuccess(true);
-			result.setIds(messages);
-			return new ResponseEntity<ForumResult.Message.List>(result, HttpStatus.OK);
+			return new ResponseEntity<ForumResult.Thread.List>(result, HttpStatus.NOT_FOUND);
 		}
+		
+		Stream<Message> stream = messages.findByThreadOrderByDateAsc(thread);
+		if (offset != null)
+			stream = stream.skip(offset);
+		if (limit != null)
+			stream = stream.limit(limit);
+		
+		long messages[] = stream.mapToLong((m) -> m.getId()).toArray();
+		
+		result.setSuccess(true);
+		result.setIds(messages);
+		return new ResponseEntity<ForumResult.Thread.List>(result, HttpStatus.OK);
+	}
+	
+	// Create Message
+	@PostMapping(path="/thread/{id}")
+	public ResponseEntity<ForumResult.Message.Create> createMsg(Authentication auth, @PathVariable(name="id") Long id, @RequestParam(name="contenu") String contenu) {
+		Thread thread = threads.findById(id).orElse(null);
+		Utilisateur utilisateur = utilisateurs.findByPseudo(auth.getName());
+		ForumResult.Message.Create result = new ForumResult.Message.Create();
+		
+		if (utilisateur == null) {
+			result.setReason("you are not logged in");
+			return new ResponseEntity<ForumResult.Message.Create>(result, HttpStatus.FORBIDDEN);
+		}
+		
+		if (thread == null) {
+			result.setReason("thread doesn't exists");
+			return new ResponseEntity<ForumResult.Message.Create>(result, HttpStatus.NOT_FOUND);
+		}
+		
+		Message message = new Message(thread, utilisateur, contenu);
+		message = messages.save(message);
+		
+		result.setSuccess(true);
+		result.setId(message.getId());
+		return new ResponseEntity<ForumResult.Message.Create>(result, HttpStatus.OK);
+	}
+	
+	// Read Message infos
+	@GetMapping(path="/message/{id}")
+	public ResponseEntity<ForumResult.Message.Read> readMsg(@PathVariable(name="id") Long id) {
+		Message message = messages.findById(id).orElse(null);
+		ForumResult.Message.Read result = new ForumResult.Message.Read();
+		
+		if (message == null) {
+			result.setReason("message not found");
+			return new ResponseEntity<ForumResult.Message.Read>(result, HttpStatus.NOT_FOUND);
+		}
+		
+		result.setSuccess(true);
+		result.fromMessage(message);
+		return new ResponseEntity<ForumResult.Message.Read>(result, HttpStatus.OK);
 	}
 }

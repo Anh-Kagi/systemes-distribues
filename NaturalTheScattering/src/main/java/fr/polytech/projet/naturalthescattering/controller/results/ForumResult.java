@@ -7,14 +7,6 @@ public abstract class ForumResult {
 		public static class Create extends GenericResult {
 			private Long id;
 			
-			public Create() {}
-			
-			public Create(boolean success, String reason, Long id) {
-				setSuccess(success);
-				setReason(reason);
-				setId(id);
-			}
-			
 			public void setId(Long id) {
 				this.id = id;
 			}
@@ -79,9 +71,7 @@ public abstract class ForumResult {
 				setAuteur(thread.getAuteur().getId());
 			}
 		}
-	}
-	
-	public static abstract class Message {
+		
 		public static class List extends GenericResult {
 			private long[] ids;
 			private Long offset;
@@ -109,6 +99,66 @@ public abstract class ForumResult {
 			
 			public long[] getIds() {
 				return this.ids;
+			}
+		}
+	}
+	
+	public static abstract class Message {
+		public static class Create extends GenericResult {
+			private Long id;
+			
+			public void setId(Long id) {
+				this.id = id;
+			}
+			
+			public Long getId() {
+				return this.id;
+			}
+		}
+		
+		public static class Read extends GenericResult {
+			private Date date;
+			private String contenu;
+			private Long auteur;
+			private Long thread;
+			
+			public void setDate(Date date) {
+				this.date = date;
+			}
+			
+			public Date getDate() {
+				return this.date;
+			}
+			
+			public void setContenu(String contenu) {
+				this.contenu = contenu;
+			}
+			
+			public String getContenu() {
+				return this.contenu;
+			}
+			
+			public void setAuteur(Long auteur) {
+				this.auteur = auteur;
+			}
+			
+			public Long getAuteur() {
+				return this.auteur;
+			}
+			
+			public void setThread(Long thread) {
+				this.thread = thread;
+			}
+			
+			public Long getThread() {
+				return this.thread;
+			}
+			
+			public void fromMessage(fr.polytech.projet.naturalthescattering.db.Message message) {
+				setDate(message.getDate());
+				setContenu(message.getContenu());
+				setAuteur(message.getAuteur().getId());
+				setThread(message.getThread().getId());
 			}
 		}
 	}
