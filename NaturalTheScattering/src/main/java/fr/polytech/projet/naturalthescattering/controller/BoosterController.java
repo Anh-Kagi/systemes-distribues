@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.polytech.projet.naturalthescattering.controller.results.BoosterOpenResult;
+import fr.polytech.projet.naturalthescattering.controller.results.BoosterResult;
 import fr.polytech.projet.naturalthescattering.db.Carte;
 import fr.polytech.projet.naturalthescattering.db.Compte;
 import fr.polytech.projet.naturalthescattering.db.CompteCarte;
@@ -34,13 +34,13 @@ public class BoosterController {
 	private ICompteRepository comptes;
 	
 	@PostMapping(path="/open")
-	public ResponseEntity<BoosterOpenResult> open(HttpServletResponse res, Authentication auth) {
+	public ResponseEntity<BoosterResult.Open> open(HttpServletResponse res, Authentication auth) {
 		Compte compte = comptes.findByPseudo(auth.getName());
 		
 		// choose 5 random carte
 		List<Carte> cartesList = cartes.findAll();
 
-		BoosterOpenResult result = new BoosterOpenResult();
+		BoosterResult.Open result = new BoosterResult.Open();
 		
 		// TODO: spend points to open
 		
@@ -61,12 +61,12 @@ public class BoosterController {
 			result.setSuccess(true);
 			result.setReason("");
 			result.setBooster(booster);
-			return new ResponseEntity<BoosterOpenResult>(result, HttpStatus.CREATED);
+			return new ResponseEntity<BoosterResult.Open>(result, HttpStatus.CREATED);
 		} else {
 			res.setStatus(500);
 			result.setSuccess(false);
 			result.setReason("Not enough cards found in database");
-			return new ResponseEntity<BoosterOpenResult>(result, HttpStatus.SERVICE_UNAVAILABLE);
+			return new ResponseEntity<BoosterResult.Open>(result, HttpStatus.SERVICE_UNAVAILABLE);
 		}
 	}
 }
