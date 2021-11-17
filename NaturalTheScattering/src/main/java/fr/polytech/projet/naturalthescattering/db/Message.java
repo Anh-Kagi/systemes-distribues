@@ -37,10 +37,16 @@ public class Message {
 	@JoinColumn(foreignKey=@ForeignKey(name="message_auteur_ref"))
 	private Utilisateur auteur;
 	
+	@ManyToOne(optional=false)
+	@Cascade({CascadeType.MERGE})
+	@JoinColumn(foreignKey=@ForeignKey(name="message_thread_ref"))
+	private Thread thread;
+	
 	protected Message() {}
 	
-	public Message(Utilisateur auteur, String contenu) {
+	public Message(Thread thread, Utilisateur auteur, String contenu) {
 		this.auteur = auteur;
+		this.thread = thread;
 		setContenu(contenu);
 	}
 	
@@ -66,6 +72,10 @@ public class Message {
 	
 	public String getContenu() {
 		return this.contenu;
+	}
+	
+	public Thread getThread() {
+		return this.thread;
 	}
 	
 	@Override

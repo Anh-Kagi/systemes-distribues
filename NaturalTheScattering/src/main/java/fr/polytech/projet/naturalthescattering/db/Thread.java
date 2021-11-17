@@ -1,19 +1,21 @@
 package fr.polytech.projet.naturalthescattering.db;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
@@ -30,16 +32,22 @@ public class Thread {
 	
 	private boolean ouvert = true;
 	
-	@ManyToOne
-	@Cascade({CascadeType.MERGE})
-	@JoinColumn(foreignKey=@ForeignKey(name="thread_proprietaire_ref"))
-	private Utilisateur proprietaire;
+	@Lob
+	private String contenu;
+	
+	@ManyToOne(cascade=CascadeType.MERGE)
+	@JoinColumn(foreignKey=@ForeignKey(name="thread_auteur_ref"))
+	private Utilisateur auteur;
+	
+	@OneToMany(cascade={CascadeType.MERGE, CascadeType.REMOVE}, targetEntity=Message.class, mappedBy="thread")
+	private List<CompteCarte> comptecartes;
 	
 	protected Thread() {}
 	
-	public Thread(String nom, Utilisateur proprietaire) {
+	public Thread(String nom, Utilisateur auteur, String contenu) {
 		this.nom = nom;
-		this.proprietaire = proprietaire;
+		this.auteur = auteur;
+		this.contenu = contenu;
 	}
 	
 	public Long getId() {
@@ -50,8 +58,8 @@ public class Thread {
 		return this.nom;
 	}
 	
-	public Utilisateur getProprietaire() {
-		return this.proprietaire;
+	public Utilisateur getAuteur() {
+		return this.auteur;
 	}
 	
 	public Date getDate() {
@@ -62,8 +70,16 @@ public class Thread {
 		return this.ouvert;
 	}
 	
+	public void setOuvert(boolean ouvert) {
+		this.ouvert = ouvert;
+	}
+	
+	public String getContenu() {
+		return this.contenu;
+	}
+	
 	@Override
 	public String toString() {
-		return "[Thread(id=" + getId() + " | nom=" + getNom() + " | date=" + getDate() + " | ouvert=" + getOuvert() + " | proprietaire=" + (getProprietaire() == null ? null : getProprietaire().getId()) + ")]";
+		return "[Thread(id=" + getId() + " | nom=" + getNom() + " | date=" + getDate() + " | ouvert=" + getOuvert() + " | auteur=" + (getAuteur() == null ? null : getAuteur().getId()) + ")]";
 	}
 }
