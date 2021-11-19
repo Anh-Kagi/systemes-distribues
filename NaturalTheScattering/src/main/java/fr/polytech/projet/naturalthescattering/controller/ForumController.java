@@ -152,6 +152,11 @@ public class ForumController {
 			return new ResponseEntity<ForumResult.Message.Create>(result, HttpStatus.NOT_FOUND);
 		}
 		
+		if (!thread.getOuvert()) {
+			result.setReason("thread is closed");
+			return new ResponseEntity<ForumResult.Message.Create>(result, HttpStatus.FORBIDDEN);
+		}
+		
 		Message message = new Message(thread, utilisateur, contenu);
 		message = messages.save(message);
 		

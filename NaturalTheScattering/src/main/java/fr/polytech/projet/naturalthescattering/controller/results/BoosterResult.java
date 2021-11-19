@@ -26,7 +26,7 @@ public abstract class BoosterResult {
 			}
 		}
 		
-		public List<Long> getBoster() {
+		public List<Long> getBooster() {
 			return this.booster;
 		}
 	}
