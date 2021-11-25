@@ -1,9 +1,9 @@
 package fr.polytech.projet.naturalthescattering.db;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.ForeignKey;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -14,7 +14,7 @@ import fr.polytech.projet.naturalthescattering.auth.Role;
 public class Joueur extends Utilisateur {
 	private int argent = 0;
 	
-	@OneToOne
+	@ManyToOne
 	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="joueur_guilde_ref"))
 	private Guilde guilde;

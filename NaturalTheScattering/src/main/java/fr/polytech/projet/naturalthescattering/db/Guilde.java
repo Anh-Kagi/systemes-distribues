@@ -1,5 +1,7 @@
 package fr.polytech.projet.naturalthescattering.db;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -16,8 +19,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 @Entity
-@Table(indexes=@Index(name="chef_idx", columnList="chef_id"),
-	uniqueConstraints=@UniqueConstraint(name="chef_unq", columnNames="chef_id"))
+@Table(indexes={@Index(name="chef_idx", columnList="chef_id"), @Index(name="nom_idx", columnList="nom")},
+	uniqueConstraints={@UniqueConstraint(name="chef_unq", columnNames="chef_id"), @UniqueConstraint(name="nom_unq", columnNames="nom")})
 public class Guilde {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -30,6 +33,9 @@ public class Guilde {
 	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="guilde_chef_ref"))
 	private Joueur chef;
+	
+	@OneToMany(targetEntity=Joueur.class, mappedBy="id")
+	private List<Joueur> joueurs;
 	
 	protected Guilde() {}
 	
