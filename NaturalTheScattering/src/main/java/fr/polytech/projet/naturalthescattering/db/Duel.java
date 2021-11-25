@@ -19,7 +19,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(indexes= {@Index(name="tournoi_idx", columnList="tournoi_id"),
+@Table(indexes= {@Index(name="tournament_idx", columnList="tournament_id"),
 		@Index(name="p1_idx", columnList="p1_id"),
 		@Index(name="p2_idx", columnList="p2_id")})
 public class Duel {
@@ -34,24 +34,24 @@ public class Duel {
 	@ManyToOne(optional=false)
 	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="duel_p1_ref"))
-	private Compte p1;
+	private Account p1;
 	
 	@ManyToOne(optional=false)
 	@Cascade({CascadeType.MERGE})
 	@JoinColumn(foreignKey=@ForeignKey(name="duel_p2_ref"))
-	private Compte p2;
+	private Account p2;
 	
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="duel_tournoi_ref"))
-	private Tournoi tournoi;
+	private Tournament tournament;
 	
 	protected Duel() {}
 	
-	public Duel(Compte p1) {
+	public Duel(Account p1) {
 		setP1(p1);
 	}
 	
-	public Duel(Compte p1, Compte p2) {
+	public Duel(Account p1, Account p2) {
 		setP1(p1);
 		setP2(p2);
 	}
@@ -60,19 +60,19 @@ public class Duel {
 		return this.id;
 	}
 	
-	public void setP1(Compte p1) {
+	public void setP1(Account p1) {
 		this.p1 = p1;
 	}
 	
-	public Compte getP1() {
+	public Account getP1() {
 		return this.p1;
 	}
 	
-	public void setP2(Compte p2) {
+	public void setP2(Account p2) {
 		this.p2 = p2;
 	}
 	
-	public Compte getP2() {
+	public Account getP2() {
 		return this.p2;
 	}
 	
@@ -84,16 +84,16 @@ public class Duel {
 		return this.date;
 	}
 	
-	public void setTournoi(Tournoi tournoi) {
-		this.tournoi = tournoi;
+	public void setTournament(Tournament tournament) {
+		this.tournament = tournament;
 	}
 	
-	public Tournoi getTournoi() {
-		return this.tournoi;
+	public Tournament getTournament() {
+		return this.tournament;
 	}
 	
 	@Override
 	public String toString() {
-		return "[Duel(id=" + getId() + " | p1=" + (getP1() == null ? null : getP1().getId()) + " | p2=" + (getP2() == null ? null : getP2().getId()) + " | date=" + getDate() + " | tournoi=" + (getTournoi() == null ? null : getTournoi().getId()) + ")]";
+		return "[Duel(id=" + getId() + " | p1=" + (getP1() == null ? null : getP1().getId()) + " | p2=" + (getP2() == null ? null : getP2().getId()) + " | date=" + getDate() + " | tournament=" + (getTournament() == null ? null : getTournament().getId()) + ")]";
 	}
 }

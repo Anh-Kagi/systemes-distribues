@@ -3,22 +3,22 @@ package fr.polytech.projet.naturalthescattering.db;
 import javax.persistence.Entity;
 
 @Entity
-public class Bot extends Compte {
-	private int difficulte = 1;
+public class Bot extends Account {
+	private int difficulty = 1;
 	
 	protected Bot() {}
 	
-	public Bot(String pseudo, int difficulte) {
+	public Bot(String pseudo, int difficulty) {
 		super(pseudo);
-		this.difficulte = difficulte;
+		this.difficulty = difficulty;
 	}
 	
-	public int getDifficulte() {
-		return this.difficulte;
+	public int getDifficulty() {
+		return this.difficulty;
 	}
 	
 	@Override
 	public String toString() {
-		return "[Bot(id=" + getId() + " | pseudo=" + getPseudo() + " | difficulte=" + getDifficulte() + ")]";
+		return "[Bot(id=" + getId() + " | pseudo=" + getPseudo() + " | difficulty=" + getDifficulty() + ")]";
 	}
 }

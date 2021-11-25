@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import fr.polytech.projet.naturalthescattering.auth.Role;
 
 @Entity
-public class Admin extends Utilisateur {
+public class Admin extends User {
 	protected Admin() {}
 	
 	public Admin(String pseudo, String mdp) {

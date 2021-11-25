@@ -19,27 +19,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.polytech.projet.naturalthescattering.controller.results.GenericResult;
-import fr.polytech.projet.naturalthescattering.db.Utilisateur;
-import fr.polytech.projet.naturalthescattering.db.repository.IUtilisateurRepository;
+import fr.polytech.projet.naturalthescattering.db.User;
+import fr.polytech.projet.naturalthescattering.db.repository.IUserRepository;
 
 @RestController
 @RequestMapping(path="/api/self")
 public class SelfController {
 	@Autowired
-	private IUtilisateurRepository utilisateurs;
+	private IUserRepository users;
 	
-	@PutMapping(path="/mdp")
-	public ResponseEntity<GenericResult> mdp(HttpServletRequest req, Authentication auth, @RequestParam(name="old", required=true) String oldmdp, @RequestParam(name="new", required=true) String newmdp) {
+	@PutMapping(path="/password")
+	public ResponseEntity<GenericResult> mdp(HttpServletRequest req, Authentication auth, @RequestParam(name="old", required=true) String oldpasswd, @RequestParam(name="new", required=true) String newpasswd) {
 		GenericResult result = new GenericResult();
-		Utilisateur utilisateur = utilisateurs.findByPseudo(auth.getName());
-		if (utilisateur == null) {
+		User user = users.findByPseudo(auth.getName());
+		if (user == null) {
 			result.setSuccess(false);
 			result.setReason("User not found");
 			return new ResponseEntity<GenericResult>(result, HttpStatus.NOT_FOUND);
 		} else {
-			if (utilisateur.setMdp(oldmdp, newmdp)) {
-				utilisateurs.save(utilisateur);
-			    Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getName(), newmdp); // create new Authentication with new password
+			if (user.setPasswd(oldpasswd, newpasswd)) {
+				users.save(user);
+			    Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getName(), newpasswd); // create new Authentication with new password
 			    SecurityContext sc = SecurityContextHolder.getContext();
 			    sc.setAuthentication(newAuth); // change Authentication
 			    HttpSession session = req.getSession(); // should not return false (user should be already authenticated)
@@ -57,16 +57,15 @@ public class SelfController {
 	}
 	
 	@DeleteMapping(path={"/", ""})
-	public ResponseEntity<GenericResult> delete(HttpServletRequest req, HttpServletResponse res, Authentication auth, @RequestParam(name="mdp", required=true) String mdp) {
-		Utilisateur utilisateur = utilisateurs.findByPseudo(auth.getName());
+	public ResponseEntity<GenericResult> delete(HttpServletRequest req, HttpServletResponse res, Authentication auth, @RequestParam(name="password", required=true) String password) {
+		User user = users.findByPseudo(auth.getName());
 		GenericResult result = new GenericResult();
-		if (utilisateur == null) {
+		if (user == null) {
 			result.setReason("user not found");
 			return new ResponseEntity<GenericResult>(result, HttpStatus.NOT_FOUND);
 		} else {
-			if (utilisateur.verifyMdp(mdp)) {
-				//comptecartes.removeByProprietaire(utilisateur);
-				utilisateurs.deleteById(utilisateur.getId());
+			if (user.verifyPasswd(password)) {
+				users.deleteById(user.getId());
 				
 			    HttpSession session = req.getSession(); // should not return false (user should be already authenticated)
 				session.invalidate(); // delete session (and authentication)

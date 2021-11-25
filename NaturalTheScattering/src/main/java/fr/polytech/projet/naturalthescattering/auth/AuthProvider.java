@@ -9,22 +9,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
-import fr.polytech.projet.naturalthescattering.db.Utilisateur;
-import fr.polytech.projet.naturalthescattering.db.repository.IUtilisateurRepository;
+import fr.polytech.projet.naturalthescattering.db.User;
+import fr.polytech.projet.naturalthescattering.db.repository.IUserRepository;
 
 @Component
 public class AuthProvider implements AuthenticationProvider {
 	@Autowired
-	IUtilisateurRepository utilisateurs;
+	IUserRepository users;
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String name = authentication.getName();
 		String password = authentication.getCredentials().toString();
 		
-		Utilisateur user = utilisateurs.findByPseudo(name);
+		User user = users.findByPseudo(name);
 		if (user != null) {
-			if (user.verifyMdp(password))
+			if (user.verifyPasswd(password))
 				return new UsernamePasswordAuthenticationToken(name, password, new ArrayList<>());
 		}
 		return null;

@@ -24,62 +24,62 @@ public class Thread {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	private String nom;
+	private String name;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	private Date date;
 	
-	private boolean ouvert = true;
+	private boolean open = true;
 	
 	@Lob
-	private String contenu;
+	private String content;
 	
 	@ManyToOne(cascade=CascadeType.MERGE)
-	@JoinColumn(foreignKey=@ForeignKey(name="thread_auteur_ref"))
-	private Utilisateur auteur;
+	@JoinColumn(foreignKey=@ForeignKey(name="thread_author_ref"))
+	private User author;
 	
 	@OneToMany(cascade={CascadeType.MERGE, CascadeType.REMOVE}, targetEntity=Message.class, mappedBy="thread")
-	private List<CompteCarte> comptecartes;
+	private List<AccountCard> accountcards;
 	
 	protected Thread() {}
 	
-	public Thread(String nom, Utilisateur auteur, String contenu) {
-		this.nom = nom;
-		this.auteur = auteur;
-		this.contenu = contenu;
+	public Thread(String name, User author, String content) {
+		this.name = name;
+		this.author = author;
+		this.content = content;
 	}
 	
 	public Long getId() {
 		return this.id;
 	}
 	
-	public String getNom() {
-		return this.nom;
+	public String getName() {
+		return this.name;
 	}
 	
-	public Utilisateur getAuteur() {
-		return this.auteur;
+	public User getAuthor() {
+		return this.author;
 	}
 	
 	public Date getDate() {
 		return this.date;
 	}
 	
-	public boolean getOuvert() {
-		return this.ouvert;
+	public boolean getOpen() {
+		return this.open;
 	}
 	
-	public void setOuvert(boolean ouvert) {
-		this.ouvert = ouvert;
+	public void setOpen(boolean open) {
+		this.open = open;
 	}
 	
-	public String getContenu() {
-		return this.contenu;
+	public String getContent() {
+		return this.content;
 	}
 	
 	@Override
 	public String toString() {
-		return "[Thread(id=" + getId() + " | nom=" + getNom() + " | date=" + getDate() + " | ouvert=" + getOuvert() + " | auteur=" + (getAuteur() == null ? null : getAuteur().getId()) + ")]";
+		return "[Thread(id=" + getId() + " | nom=" + getName() + " | date=" + getDate() + " | open=" + getOpen() + " | auteur=" + (getAuthor() == null ? null : getAuthor().getId()) + ")]";
 	}
 }

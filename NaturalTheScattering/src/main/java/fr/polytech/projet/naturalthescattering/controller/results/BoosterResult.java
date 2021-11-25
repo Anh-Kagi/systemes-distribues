@@ -3,7 +3,7 @@ package fr.polytech.projet.naturalthescattering.controller.results;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.polytech.projet.naturalthescattering.db.Carte;
+import fr.polytech.projet.naturalthescattering.db.Card;
 
 public abstract class BoosterResult {
 	public static class Open extends GenericResult{
@@ -11,12 +11,12 @@ public abstract class BoosterResult {
 		
 		public Open() {}
 		
-		public Open(boolean result, String reason, List<Carte> booster) {
+		public Open(boolean result, String reason, List<Card> booster) {
 			super(result, reason);
 			setBooster(booster);
 		}
 		
-		public void setBooster(List<Carte> booster) {
+		public void setBooster(List<Card> booster) {
 			if (booster == null) {
 				this.booster.clear();
 			} else {

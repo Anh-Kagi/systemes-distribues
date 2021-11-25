@@ -30,12 +30,12 @@ public class Message {
 	
 	@Lob
 	@Column(nullable=false)
-	private String contenu;
+	private String content;
 	
 	@ManyToOne(optional=false)
 	@Cascade({CascadeType.MERGE})
-	@JoinColumn(foreignKey=@ForeignKey(name="message_auteur_ref"))
-	private Utilisateur auteur;
+	@JoinColumn(foreignKey=@ForeignKey(name="message_author_ref"))
+	private User author;
 	
 	@ManyToOne(optional=false)
 	@Cascade({CascadeType.MERGE})
@@ -44,18 +44,18 @@ public class Message {
 	
 	protected Message() {}
 	
-	public Message(Thread thread, Utilisateur auteur, String contenu) {
-		this.auteur = auteur;
+	public Message(Thread thread, User author, String content) {
+		this.author = author;
 		this.thread = thread;
-		setContenu(contenu);
+		setContent(content);
 	}
 	
 	public Long getId() {
 		return this.id;
 	}
 	
-	public Utilisateur getAuteur() {
-		return this.auteur;
+	public User getAuthor() {
+		return this.author;
 	}
 	
 	public void setDate(Date date) {
@@ -66,12 +66,12 @@ public class Message {
 		return this.date;
 	}
 	
-	public void setContenu(String contenu) {
-		this.contenu = contenu;
+	public void setContent(String content) {
+		this.content = content;
 	}
 	
-	public String getContenu() {
-		return this.contenu;
+	public String getContent() {
+		return this.content;
 	}
 	
 	public Thread getThread() {
@@ -80,6 +80,6 @@ public class Message {
 	
 	@Override
 	public String toString() {
-		return "[Message(id=" + getId() + " | date=" + getDate() + " | contenu=" + getContenu().substring(0, 10) + " | auteur=" + (getAuteur() == null ? null : getAuteur().getId()) + ")]";
+		return "[Message(id=" + getId() + " | date=" + getDate() + " | contenu=" + getContent().substring(0, 10) + " | auteur=" + (getAuthor() == null ? null : getAuthor().getId()) + ")]";
 	}
 }

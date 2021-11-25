@@ -7,5 +7,5 @@ public abstract class Config {
 	public static final int pbkdf2SaltSize = 64;
 	public static final int pbkdf2Iterations = 250000;
 	public static final int pbkdf2HashWidth = 512;
-	public static PasswordEncoder pbkdf2; // autowiring inside Joueur doesn't work :rage:
+	public static PasswordEncoder pbkdf2; // autowiring inside Player doesn't work :rage:
 }

@@ -18,21 +18,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.polytech.projet.naturalthescattering.controller.results.GenericResult;
-import fr.polytech.projet.naturalthescattering.db.Joueur;
-import fr.polytech.projet.naturalthescattering.db.repository.IJoueurRepository;
+import fr.polytech.projet.naturalthescattering.db.Player;
+import fr.polytech.projet.naturalthescattering.db.repository.IPlayerRepository;
 
 @RestController
 @RequestMapping(path="/api/auth")
 public class AuthController {
 	@Autowired
-	IJoueurRepository joueurs;
+	IPlayerRepository players;
 	
 	@PostMapping(path="/register")
 	public ResponseEntity<GenericResult> register(HttpServletRequest req, HttpServletResponse res, Authentication auth, @RequestParam(name="username", required=true) String username, @RequestParam(name="password", required=true) String password) {
 		GenericResult result = new GenericResult();
 		if (!username.isEmpty() && !password.isEmpty()) {
-			if (!joueurs.existsByPseudo(username)) {
-				joueurs.save(new Joueur(username, password, 0));
+			if (!players.existsByPseudo(username)) {
+				players.save(new Player(username, password, 0));
 				
 			    Authentication newAuth = new UsernamePasswordAuthenticationToken(username, password); // create new Authentication with new password
 			    SecurityContext sc = SecurityContextHolder.getContext();

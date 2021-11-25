@@ -18,16 +18,13 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
 import fr.polytech.projet.naturalthescattering.auth.AuthProvider;
 import fr.polytech.projet.naturalthescattering.db.Admin;
-import fr.polytech.projet.naturalthescattering.db.Carte;
-import fr.polytech.projet.naturalthescattering.db.Joueur;
+import fr.polytech.projet.naturalthescattering.db.Card;
+import fr.polytech.projet.naturalthescattering.db.Player;
 
 @SpringBootApplication
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapter {
-	@Autowired
-	Repository repo;
-	
 	public static void main(String[] args) {
 		SpringApplication.run(NaturalTheScatteringApplication.class, args);
 	}
@@ -47,11 +44,11 @@ public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapte
 	@DependsOn("pbkdf2")
 	public CommandLineRunner db_init() {
 		return (args) -> {
-			repo.joueurs.save(new Joueur("tmp", "tmp", 0));
-			repo.admins.save(new Admin("root", "root"));
+			Repository.players.save(new Player("tmp", "tmp", 0));
+			Repository.admins.save(new Admin("root", "root"));
 			
 			for (int i=1; i<=10; i++)
-				repo.cartes.save(new Carte("Carte " + i, i));
+				Repository.cards.save(new Card("Carte " + i, i));
 		};
 	}
 	

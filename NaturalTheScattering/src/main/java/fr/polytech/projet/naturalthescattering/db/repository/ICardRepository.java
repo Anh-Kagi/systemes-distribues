@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import fr.polytech.projet.naturalthescattering.db.Carte;
+import fr.polytech.projet.naturalthescattering.db.Card;
 
-public interface ICarteRepository extends JpaRepository<Carte, Long> {
+public interface ICardRepository extends JpaRepository<Card, Long> {
 	@Override
-	public List<Carte> findAll();
+	public List<Card> findAll();
 }

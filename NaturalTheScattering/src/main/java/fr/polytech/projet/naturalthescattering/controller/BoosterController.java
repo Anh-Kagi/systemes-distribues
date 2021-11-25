@@ -14,47 +14,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.polytech.projet.naturalthescattering.controller.results.BoosterResult;
-import fr.polytech.projet.naturalthescattering.db.Carte;
-import fr.polytech.projet.naturalthescattering.db.Compte;
-import fr.polytech.projet.naturalthescattering.db.CompteCarte;
-import fr.polytech.projet.naturalthescattering.db.repository.ICarteRepository;
-import fr.polytech.projet.naturalthescattering.db.repository.ICompteCarteRepository;
-import fr.polytech.projet.naturalthescattering.db.repository.ICompteRepository;
+import fr.polytech.projet.naturalthescattering.db.Account;
+import fr.polytech.projet.naturalthescattering.db.AccountCard;
+import fr.polytech.projet.naturalthescattering.db.Card;
+import fr.polytech.projet.naturalthescattering.db.repository.IAccountCardRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.IAccountRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.ICardRepository;
 
 @RestController
 @RequestMapping(path="/api/booster")
 public class BoosterController {
 	@Autowired
-	private ICarteRepository cartes;
+	private ICardRepository cards;
 	
 	@Autowired
-	private ICompteCarteRepository comptecartes;
+	private IAccountCardRepository accountcards;
 	
 	@Autowired
-	private ICompteRepository comptes;
+	private IAccountRepository accounts;
 	
 	@PostMapping(path="/open")
 	public ResponseEntity<BoosterResult.Open> open(HttpServletResponse res, Authentication auth) {
-		Compte compte = comptes.findByPseudo(auth.getName());
+		Account account = accounts.findByPseudo(auth.getName());
 		
 		// choose 5 random carte
-		List<Carte> cartesList = cartes.findAll();
+		List<Card> cardsList = cards.findAll();
 
 		BoosterResult.Open result = new BoosterResult.Open();
 		
 		// TODO: spend points to open
 		
-		if (cartesList.size() >= 5) {
-			Collections.shuffle(cartesList);
-			List<Carte> booster = cartesList.subList(0, 5);
+		if (cardsList.size() >= 5) {
+			Collections.shuffle(cardsList);
+			List<Card> booster = cardsList.subList(0, 5);
 			
-			for (Carte c : booster) {
-				CompteCarte cc = comptecartes.findByProprietaireAndCarte(compte, c);
+			for (Card c : booster) {
+				AccountCard cc = accountcards.findByOwnerAndCard(account, c);
 				if (cc == null)
-					comptecartes.save(new CompteCarte(compte, c, 1));
+					accountcards.save(new AccountCard(account, c, 1));
 				else {
-					cc.incQuantite();
-					comptecartes.save(cc);
+					cc.incQuantity();
+					accountcards.save(cc);
 				}
 			}
 			

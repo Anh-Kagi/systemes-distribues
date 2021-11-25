@@ -1,5 +1,7 @@
 package fr.polytech.projet.naturalthescattering.db;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,52 +15,52 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
-public class Carte {
+public class Card {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable=false)
-	private String nom;
+	private String name;
 	
-	private int rarete = 0;
-	
-	@OneToMany(cascade=CascadeType.MERGE, fetch=FetchType.LAZY)
-	@JoinColumn(foreignKey=@ForeignKey(name="carte_comptecarte_ref"))
-	@Transient
-	private CompteCarte[] comptecartes;
+	private int rarity = 0;
 	
 	@OneToMany(cascade=CascadeType.MERGE, fetch=FetchType.LAZY)
-	@JoinColumn(foreignKey=@ForeignKey(name="carte_decks_ref"))
+	@JoinColumn(foreignKey=@ForeignKey(name="card_accountcards_ref"))
 	@Transient
-	private Deck[] decks;
+	private List<AccountCard> accountcards;
 	
 	@OneToMany(cascade=CascadeType.MERGE, fetch=FetchType.LAZY)
-	@JoinColumn(foreignKey=@ForeignKey(name="carte_ventecartes_ref"))
+	@JoinColumn(foreignKey=@ForeignKey(name="card_decks_ref"))
 	@Transient
-	private VenteCarte[] ventecartes;
+	private List<Deck> decks;
 	
-	protected Carte() {}
+	@OneToMany(cascade=CascadeType.MERGE, fetch=FetchType.LAZY)
+	@JoinColumn(foreignKey=@ForeignKey(name="card_salecards_ref"))
+	@Transient
+	private List<SaleCard> salecards;
 	
-	public Carte(String nom, int rarete) {
-		this.nom = nom;
-		this.rarete = rarete;
+	protected Card() {}
+	
+	public Card(String name, int rarity) {
+		this.name = name;
+		this.rarity = rarity;
 	}
 	
 	public Long getId() {
 		return this.id;
 	}
 	
-	public String getNom() {
-		return this.nom;
+	public String getName() {
+		return this.name;
 	}
 	
-	public int getRarete() {
-		return this.rarete;
+	public int getRarity() {
+		return this.rarity;
 	}
 	
 	@Override
 	public String toString() {
-		return "[Carte(id=" + getId() + " | nom=" + getNom() + " | rarete=" + getRarete() + ")]"; 
+		return "[Card(id=" + getId() + " | name=" + getName() + " | rarity=" + getRarity() + ")]"; 
 	}
 }

@@ -18,49 +18,49 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-public class Tournoi {
+public class Tournament {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable=false)
-	private String nom;
+	private String name;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	private Date date;
 	
-	private boolean ouvert = true;
+	private boolean open = true;
 	
-	@OneToMany(cascade=CascadeType.MERGE, mappedBy="tournoi_id")
+	@OneToMany(cascade=CascadeType.MERGE, mappedBy="tournament_id")
 	@Transient
-	@JoinColumn(foreignKey=@ForeignKey(name="tournoi_duels_ref"))
+	@JoinColumn(foreignKey=@ForeignKey(name="tournament_duels_ref"))
 	private Duel[] duels;
 	
-	protected Tournoi() {}
+	protected Tournament() {}
 	
-	public Tournoi(String nom) {
-		this.nom = nom;
+	public Tournament(String name) {
+		this.name = name;
 	}
 	
 	public Long getId() {
 		return this.id;
 	}
 	
-	public String getNom() {
-		return this.nom;
+	public String getName() {
+		return this.name;
 	}
 	
 	public Date getDate() {
 		return this.date;
 	}
 
-	public void setOuvert(boolean ouvert) {
-		this.ouvert = ouvert;
+	public void setOpen(boolean open) {
+		this.open = open;
 	}
 	
-	public boolean getOuvert() {
-		return this.ouvert;
+	public boolean getOpen() {
+		return this.open;
 	}
 	
 	public Duel[] getDuels() {
@@ -69,6 +69,6 @@ public class Tournoi {
 	
 	@Override
 	public String toString() {
-		return "[Tournoi(id=" + getId() + " | nom=" + getNom() + " | date=" + getDate() + " | ouvert=" + getOuvert() + ")]";
+		return "[Tournament(id=" + getId() + " | name=" + getName() + " | date=" + getDate() + " | open=" + getOpen() + ")]";
 	}
 }

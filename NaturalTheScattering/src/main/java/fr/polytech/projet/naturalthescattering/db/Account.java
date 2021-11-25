@@ -16,7 +16,7 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(indexes=@Index(name="pseudo_idx", columnList="pseudo"),
 	uniqueConstraints=@UniqueConstraint(name="pseudo_unq", columnNames={"pseudo"}))
-public abstract class Compte {
+public abstract class Account {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(nullable=false)
@@ -25,12 +25,12 @@ public abstract class Compte {
 	@Column(nullable=false, length=16)
 	private String pseudo;
 	
-	@OneToMany(cascade={CascadeType.MERGE, CascadeType.REMOVE}, targetEntity=CompteCarte.class, mappedBy="proprietaire")
-	private List<CompteCarte> comptecartes;
+	@OneToMany(cascade={CascadeType.MERGE, CascadeType.REMOVE}, targetEntity=AccountCard.class, mappedBy="owner")
+	private List<AccountCard> accountcards;
 	
-	protected Compte() {}
+	protected Account() {}
 	
-	public Compte(String pseudo) {
+	public Account(String pseudo) {
 		this.pseudo = pseudo;
 	}
 	
@@ -44,10 +44,10 @@ public abstract class Compte {
 	
 	@Override
 	public String toString() {
-		return "[Compte(id=" + getId() + " | pseudo=" + getPseudo() + ")]";
+		return "[Account(id=" + getId() + " | pseudo=" + getPseudo() + ")]";
 	}
 	
-	public List<CompteCarte> getCompteCarte() {
-		return this.comptecartes;
+	public List<AccountCard> getAccountCards() {
+		return this.accountcards;
 	}
 }

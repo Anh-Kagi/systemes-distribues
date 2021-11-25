@@ -17,18 +17,18 @@ public abstract class ForumResult {
 		}
 		
 		public static class Read extends GenericResult {
-			private String nom;
+			private String name;
 			private Date date;
-			private boolean ouvert;
-			private String contenu;
-			private Long auteur;
+			private boolean open;
+			private String content;
+			private Long author;
 			
-			public void setNom(String nom) {
-				this.nom = nom;
+			public void setName(String name) {
+				this.name = name;
 			}
 			
-			public String getNom() {
-				return this.nom;
+			public String getName() {
+				return this.name;
 			}
 			
 			public void setDate(Date date) {
@@ -39,36 +39,36 @@ public abstract class ForumResult {
 				return this.date;
 			}
 			
-			public void setOuvert(boolean ouvert) {
-				this.ouvert = ouvert;
+			public void setOpen(boolean open) {
+				this.open = open;
 			}
 			
-			public boolean getOuvert() {
-				return this.ouvert;
+			public boolean getOpen() {
+				return this.open;
 			}
 			
-			public void setContenu(String contenu) {
-				this.contenu = contenu;
+			public void setContent(String content) {
+				this.content = content;
 			}
 			
-			public String getContenu() {
-				return this.contenu;
+			public String getContent() {
+				return this.content;
 			}
 			
-			public void setAuteur(Long auteur) {
-				this.auteur = auteur;
+			public void setAuthor(Long author) {
+				this.author = author;
 			}
 			
-			public Long getAuteur() {
-				return this.auteur;
+			public Long getAuthor() {
+				return this.author;
 			}
 			
 			public void fromThread(fr.polytech.projet.naturalthescattering.db.Thread thread) {
-				setNom(thread.getNom());
+				setName(thread.getName());
 				setDate(thread.getDate());
-				setOuvert(thread.getOuvert());
-				setContenu(thread.getContenu());
-				setAuteur(thread.getAuteur().getId());
+				setOpen(thread.getOpen());
+				setContent(thread.getContent());
+				setAuthor(thread.getAuthor().getId());
 			}
 		}
 		
@@ -118,8 +118,8 @@ public abstract class ForumResult {
 		
 		public static class Read extends GenericResult {
 			private Date date;
-			private String contenu;
-			private Long auteur;
+			private String content;
+			private Long author;
 			private Long thread;
 			
 			public void setDate(Date date) {
@@ -130,20 +130,20 @@ public abstract class ForumResult {
 				return this.date;
 			}
 			
-			public void setContenu(String contenu) {
-				this.contenu = contenu;
+			public void setContent(String content) {
+				this.content = content;
 			}
 			
-			public String getContenu() {
-				return this.contenu;
+			public String getContent() {
+				return this.content;
 			}
 			
-			public void setAuteur(Long auteur) {
-				this.auteur = auteur;
+			public void setAuthor(Long author) {
+				this.author = author;
 			}
 			
-			public Long getAuteur() {
-				return this.auteur;
+			public Long getAuthor() {
+				return this.author;
 			}
 			
 			public void setThread(Long thread) {
@@ -156,8 +156,8 @@ public abstract class ForumResult {
 			
 			public void fromMessage(fr.polytech.projet.naturalthescattering.db.Message message) {
 				setDate(message.getDate());
-				setContenu(message.getContenu());
-				setAuteur(message.getAuteur().getId());
+				setContent(message.getContent());
+				setAuthor(message.getAuthor().getId());
 				setThread(message.getThread().getId());
 			}
 		}

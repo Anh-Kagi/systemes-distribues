@@ -2,7 +2,7 @@ package fr.polytech.projet.naturalthescattering.db.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import fr.polytech.projet.naturalthescattering.db.Vente;
+import fr.polytech.projet.naturalthescattering.db.Sale;
 
-public interface IVenteRepository extends JpaRepository<Vente, Long> {
+public interface ISaleRepository extends JpaRepository<Sale, Long> {
 }

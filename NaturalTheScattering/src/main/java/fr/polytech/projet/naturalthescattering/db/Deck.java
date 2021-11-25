@@ -1,5 +1,7 @@
 package fr.polytech.projet.naturalthescattering.db;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -21,49 +23,49 @@ public class Deck {
 	private Long id;
 	
 	@Column(nullable=false)
-	private String nom;
+	private String name;
 	
 	@ManyToOne
 	@Cascade({CascadeType.MERGE})
-	@JoinColumn(foreignKey=@ForeignKey(name="deck_proprietaire_ref"))
-	private Compte proprietaire;
+	@JoinColumn(foreignKey=@ForeignKey(name="deck_owner_ref"))
+	private Account owner;
 	
 	@ManyToMany
 	@OrderColumn(nullable=false)
 	@Cascade({CascadeType.MERGE})
-	@JoinColumn(foreignKey=@ForeignKey(name="deck_cartes_ref"))
-	private Carte[] cartes;
+	@JoinColumn(foreignKey=@ForeignKey(name="deck_cards_ref"))
+	private List<Card> cards;
 	
 	protected Deck() {}
 	
-	public Deck(String nom, Compte proprietaire, Carte[] cartes) {
-		this.nom = nom;
-		this.proprietaire = proprietaire;
-		this.cartes = cartes;
+	public Deck(String name, Account owner, List<Card> cards) {
+		this.name = name;
+		this.owner = owner;
+		this.cards = cards;
 	}
 	
 	public Long getId() {
 		return this.id;
 	}
 	
-	public String getNom() {
-		return this.nom;
+	public String getName() {
+		return this.name;
 	}
 	
-	public Compte getProprietaire() {
-		return this.proprietaire;
+	public Account getOner() {
+		return this.owner;
 	}
 	
-	public Carte[] getCartes() {
-		return this.cartes;
+	public List<Card> getCards() {
+		return this.cards;
 	}
 	
 	@Override
 	public String toString() {
-		String cartes_ids = "[";
-		for (Carte c : getCartes())
-			cartes_ids += " " + c.getId();
-		cartes_ids += " ]";
-		return "[Deck(id=" + getId() + " | nom=" + getNom() + " | cartes=" + cartes_ids + ")]";
+		String cards_ids = "[";
+		for (Card c : getCards())
+			cards_ids += " " + c.getId();
+		cards_ids += " ]";
+		return "[Deck(id=" + getId() + " | name=" + getName() + " | cards=" + cards_ids + ")]";
 	}
 }

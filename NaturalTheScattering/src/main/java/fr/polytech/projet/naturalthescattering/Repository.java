@@ -3,66 +3,70 @@ package fr.polytech.projet.naturalthescattering;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import fr.polytech.projet.naturalthescattering.db.repository.IAccountCardRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.IAccountRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IAdminRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IBotRepository;
-import fr.polytech.projet.naturalthescattering.db.repository.ICarteRepository;
-import fr.polytech.projet.naturalthescattering.db.repository.ICompteCarteRepository;
-import fr.polytech.projet.naturalthescattering.db.repository.ICompteRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.ICardRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IDeckRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IDuelRepository;
-import fr.polytech.projet.naturalthescattering.db.repository.IGuildeRepository;
-import fr.polytech.projet.naturalthescattering.db.repository.IJoueurRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.IGuildRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IMessageRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.IPlayerRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.ISaleCardRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.ISaleRepository;
 import fr.polytech.projet.naturalthescattering.db.repository.IThreadRepository;
-import fr.polytech.projet.naturalthescattering.db.repository.ITournoiRepository;
-import fr.polytech.projet.naturalthescattering.db.repository.IUtilisateurRepository;
-import fr.polytech.projet.naturalthescattering.db.repository.IVenteCarteRepository;
-import fr.polytech.projet.naturalthescattering.db.repository.IVenteRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.ITournamentRepository;
+import fr.polytech.projet.naturalthescattering.db.repository.IUserRepository;
 
 @Component
 public class Repository {
-	@Autowired(required=true)
-	public IAdminRepository admins;
+	public static IAdminRepository admins;
 	
-	@Autowired(required=true)
-	public IBotRepository bots;
+	public static IBotRepository bots;
 	
-	@Autowired(required=true)
-	public ICarteRepository cartes;
+	public static ICardRepository cards;
 	
-	@Autowired(required=true)
-	public ICompteRepository comptes;
+	public static IAccountRepository accounts;
 	
-	@Autowired(required=true)
-	public ICompteCarteRepository comptecartes;
+	public static IAccountCardRepository accountcards;
 	
-	@Autowired(required=true)
-	public IDeckRepository decks;
+	public static IDeckRepository decks;
 	
-	@Autowired(required=true)
-	public IDuelRepository duels;
+	public static IDuelRepository duels;
 	
-	@Autowired(required=true)
-	public IGuildeRepository guildes;
+	public static IGuildRepository guilds;
 	
-	@Autowired(required=true)
-	public IJoueurRepository joueurs;
+	public static IPlayerRepository players;
 	
-	@Autowired(required=true)
-	public IMessageRepository messages;
+	public static IMessageRepository messages;
 	
-	@Autowired(required=true)
-	public IThreadRepository threads;
+	public static IThreadRepository threads;
 	
-	@Autowired(required=true)
-	public ITournoiRepository tournois;
+	public static ITournamentRepository tournaments;
 	
-	@Autowired(required=true)
-	public IUtilisateurRepository utilisateurs;
+	public static IUserRepository users;
 	
-	@Autowired(required=true)
-	public IVenteRepository ventes;
+	public static ISaleRepository sales;
 	
-	@Autowired(required=true)
-	public IVenteCarteRepository ventecartes;
+	public static ISaleCardRepository salecards;
+	
+	@Autowired
+	public Repository(IAdminRepository admins, IBotRepository bots, ICardRepository cards, IAccountRepository accounts, IAccountCardRepository accountcards, IDeckRepository decks, IDuelRepository duels, IGuildRepository guilds, IPlayerRepository players, IMessageRepository messages, IThreadRepository threads, ITournamentRepository tournaments, IUserRepository users, ISaleRepository sales, ISaleCardRepository salecards) {
+		Repository.admins = admins;
+		Repository.bots = bots;
+		Repository.cards = cards;
+		Repository.accounts = accounts;
+		Repository.accountcards = accountcards;
+		Repository.decks = decks;
+		Repository.duels = duels;
+		Repository.guilds = guilds;
+		Repository.players = players;
+		Repository.messages = messages;
+		Repository.threads = threads;
+		Repository.tournaments = tournaments;
+		Repository.users = users;
+		Repository.sales = sales;
+		Repository.salecards = salecards;
+	}
 }
