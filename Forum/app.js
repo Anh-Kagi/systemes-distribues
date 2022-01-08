@@ -10,7 +10,7 @@ Vue.component('blog-post', {
     "</svg>"+
     "<div class='vr m-1'></div>"+
     "<div class='container d-flex flex-column'>"+
-      "<span>{{ post.date }}</span>"+
+      "<span>{{ post.author }}</span><span>{{ post.date }}</span>"+
       "<hr />"+
       "<p>"+
         "{{ post.content }}"+
@@ -43,6 +43,7 @@ if (!localStorage["threads"])
   threads = [
     {
       name: "What is the best card?",
+      author: "Luke",
       content: "The question is in the title.",
       date: new Date().toLocaleString(),
       posts: [
@@ -55,6 +56,7 @@ if (!localStorage["threads"])
     },
     {
       name: "Help - Game Mechanics",
+      author: "",
       content: "I don't understand how the game works",
       date: new Date().toLocaleString(),
       posts: [
