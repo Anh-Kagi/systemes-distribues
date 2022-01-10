@@ -105,7 +105,7 @@ function addPost(thread, author, date, content) {
         content: content,
     };
 
-    threads[thread].posts.push(post);
+    threads[thread].posts.splice(0, 0, post);
 
     return post;
 }
