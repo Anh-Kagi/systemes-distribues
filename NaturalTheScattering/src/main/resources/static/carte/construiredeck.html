@@ -9,7 +9,6 @@
 </head>
 
 <body class="bg-dark vw-99 p-5 overflow-x-hidden">
-  <link rel="stylesheet" href="construireDeck.css">
   <script src="construireDeck.js"></script>
   <div class="container rounded position-relative w-auto mx-auto p-3 m-0 bg-secondary">
     <h1 class="text-center text-warning">Construire deck</h1>
@@ -67,9 +66,9 @@
       <div class="vr m-1"></div>
       <div class="container rounded d-flex flex-column bg-dark p-2 text-center text-white">
         <div id="dropzone" class="container rounded d-flex bg-secondary flex-column justify-content-center">
-          <p class="text-center border">Exodia le maudit</p>
-          <p class="text-center border">Magicien</p>
-          <p class="text-center border">Péon</p>
+          <button type="button" class="btn btn-primary btn-lg m-2" onClick="">Exodia le maudit</button>
+          <button type="button" class="btn btn-primary btn-lg m-2" onClick="">Magicien</button>
+          <button type="button" class="btn btn-primary btn-lg m-2" onClick="">Péon</button>
         </div>
         <hr />
         <p><Strong>
@@ -84,6 +83,20 @@
       <button type="button" class="btn btn-primary btn-lg m-2" onClick="JavaScript:window.close()">Annuler</button>
     </div>
   </div>
+  <script>
+    var vm_card = new Vue({
+      el: "#deck-card-demo",
+      data: {
+        deckid: deckid,
+      },
+      methods: {
+        submit: function(message) {
+          addPost(this.threadid, "You", new Date().toLocaleString(), document.getElementById("Texte").value);
+          document.getElementById("Texte").value = "";
+        }
+      }
+    });
+  </script>
 </body>
 
 </html>
