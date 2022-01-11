@@ -49,27 +49,27 @@ else {
 function resetCache() {
     threads = [
         {
-            name: "What is the best card?",
-            author: "Luke",
-            content: "The question is in the title.",
+            name: "Quelle est la meilleure carte du jeu?",
+            author: "DarkSasuke54",
+            content: "La question est dans le titre...",
             date: new Date().toLocaleString(),
             posts: [
                 {
-                    author: "Erik",
+                    author: "K3v1n",
                     date: new Date().toLocaleString(),
-                    content: "Only noobs ask questions like these"
+                    content: "Faut être un n00b pour se poser ces questions..."
                 },
             ]
         },{
-            name: "Help - Game Mechanics",
-            author: "",
-            content: "I don't understand how the game works",
+            name: "Aide - Mécaniques de jeu",
+            author: "xXdorian57Xx",
+            content: "Je comprends pas comment on est censé jouer...",
             date: new Date().toLocaleString(),
             posts: [
                 {
-                    author: "Henry",
+                    author: "J3anN03L",
                     date: new Date().toLocaleString(),
-                    content: "It simple: use your cards to win."
+                    content: "C'est simple: utilise tes cartes pour gagner."
                 },
             ],
         }
@@ -98,7 +98,7 @@ function getThread(id) {
 
 function addPost(thread, author, date, content) {
     if (!threads[thread]) return false;
-    
+
     let post = {
         author: author,
         date: date,
