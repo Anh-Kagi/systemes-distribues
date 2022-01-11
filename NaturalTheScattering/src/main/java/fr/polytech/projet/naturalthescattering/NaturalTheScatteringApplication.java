@@ -28,38 +28,38 @@ public class NaturalTheScatteringApplication extends WebSecurityConfigurerAdapte
 	public static void main(String[] args) {
 		SpringApplication.run(NaturalTheScatteringApplication.class, args);
 	}
-	
+
 	@Bean
 	public Logger getLogger() {
 		return LoggerFactory.getLogger(NaturalTheScatteringApplication.class);
 	}
-	
+
 	@Bean("pbkdf2")
 	public PasswordEncoder passwordEncoder() {
 		Config.pbkdf2 = new Pbkdf2PasswordEncoder(Config.pbkdf2Secret, Config.pbkdf2SaltSize, Config.pbkdf2Iterations, Config.pbkdf2HashWidth);
 		return Config.pbkdf2;
 	}
-	
+
 	@Bean
 	@DependsOn("pbkdf2")
 	public CommandLineRunner db_init() {
 		return (args) -> {
-			Repository.players.save(new Player("tmp", "tmp", 0));
+			Repository.players.save(new Player("user", "user", 0));
 			Repository.admins.save(new Admin("root", "root"));
-			
+
 			for (int i=1; i<=10; i++)
 				Repository.cards.save(new Card("Carte " + i, i));
 		};
 	}
-	
+
 	@Autowired
 	AuthProvider authenticationProvider;
-	
+
 	@Override
 	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider);
 	}
-	
+
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http
