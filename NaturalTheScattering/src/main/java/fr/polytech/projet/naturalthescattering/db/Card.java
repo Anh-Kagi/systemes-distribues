@@ -25,6 +25,12 @@ public class Card {
 	
 	private int rarity = 0;
 	
+	private int hp;
+	
+	private int summon;
+	
+	private int atk;
+	
 	@OneToMany(cascade=CascadeType.MERGE, fetch=FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(name="card_accountcards_ref"))
 	@Transient
@@ -42,8 +48,11 @@ public class Card {
 	
 	protected Card() {}
 	
-	public Card(String name, int rarity) {
+	public Card(String name, int hp, int summon, int atk, int rarity) {
 		this.name = name;
+		this.hp = hp;
+		this.summon = summon;
+		this.atk = atk;
 		this.rarity = rarity;
 	}
 	
@@ -57,6 +66,18 @@ public class Card {
 	
 	public int getRarity() {
 		return this.rarity;
+	}
+	
+	public int getHp() {
+		return this.hp;
+	}
+	
+	public int getSummonCost() {
+		return this.summon;
+	}
+	
+	public int getATK() {
+		return atk;
 	}
 	
 	@Override
