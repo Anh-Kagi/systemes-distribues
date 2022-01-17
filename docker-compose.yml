@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+    app:
+        build:
+            context: ./NaturalTheScattering
+        restart: unless-stopped
+        ports:
+            - 8080:8080
+        environment:
+            APP_PORT: ${APP_PORT}
+            DB_HOST: ${DB_HOST}
+            DB_USER: ${DB_USER}
+            DB_PASS: ${DB_PASS}
+            DB_DTBS: ${DB_DTBS}
+        links:
+            - db
+
+    db:
+        image: mariadb:10.6.5
+        restart: unless-stopped
+        expose:
+            - 3306
+        hostname: ${DB_HOST}
+        environment:
+            MARIADB_USER: ${DB_USER}
+            MARIADB_PASSWORD: ${DB_PASS}
+            MARIADB_DATABASE: ${DB_DTBS}
+            MARIADB_RANDOM_ROOT_PASSWORD: "true"
+        volumes:
+            -   mariadb:/var/lib/mysql
+
+volumes:
+    mariadb:
